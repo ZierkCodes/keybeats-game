@@ -69,7 +69,7 @@ export const f = {
   ]
 };
 
-export const globalDuration = 300;
+export const globalDuration = 2000;
 
 export const keybeats = {
   duration: 146313,

@@ -54,7 +54,8 @@ body::after {
     margin: 0 auto;
     position: relative;
     /* top: -130px; */
-    top: -100px;
+    /* top: -100px; */
+    top: 0;
     z-index: 10;
 }
 
