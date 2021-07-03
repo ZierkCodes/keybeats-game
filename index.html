@@ -4,28 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="js/app.js"></script>
+    <script defer src="js/app.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <title>KeyBeats</title>
 </head>
 <body>
     <!--Overlays-->
     <!-- <div class="overlay" id="losing" hidden></div>
     <div class="overlay" id="normal" ></div>
     <div class="overlay" id="hard" hidden></div> -->
+    <!--Song-->
+    <audio id="keybeats-audio" src="assets/audio/KeyBeats.mp3"></audio>
 
     <section id="starting-screen" hidden>
 
     </section>
 
     <section id="game">
-        <div id=""></div>
+    
         <div id="track">
             <div id="a-track"><div class="note"></div></div>
             <div id="s-track"><div class="note"></div></div>
             <div id="d-track"><div class="note"></div></div>
             <div id="f-track"><div class="note"></div></div>
             <div id="hit-box"></div>
+        </div>
+        <div>
+            <div id="score">
+                <div>SCORE</div>
+                <div>0</div>
+            </div>
+            <div id="controls">
+                <div>A</div>
+                <div>S</div>
+                <div>D</div>
+                <div>F</div>
+            </div>
+            <div>
+                <div id="combo">COMBO</div>
+                <div>0x</div>
+            </div>
         </div>
 
     </section>
