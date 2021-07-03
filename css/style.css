@@ -103,7 +103,7 @@ body::after {
 }
 
 .note {
-    position: relative;
+    position: absolute;
     width: 15px;
     height: 5px;
     top: -70px;

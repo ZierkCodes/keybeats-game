@@ -1,15 +1,105 @@
 import {a, s, d, f, globalDuration, keybeats} from './keybeats_test.js';
 
-let isPlaying = false;
-let startTime;
-let notes;
+// Setup Variables
+let songPosition;
+// let notes = {
+//     aTrack: [],
+//     sTrack: [],
+//     dTrack: [],
+//     fTrack: []
+// }
 
-// Setup Event Listeners
+// let a = {
+//     track: 'a-track',
+//     notes: []
+// }
+
+// let s = {
+//     track: 's-track',
+//     notes: []
+// }
+
+// let d = {
+//     track: 'd-track',
+//     notes: []
+// }
+
+// let f = {
+//     track: 'f-track',
+//     notes: []
+// }
+
+// Adding Event Listeners
+let audio = document.querySelector('#keybeats-audio');
+audio.addEventListener("timeupdate", function() {
+    songPosition = parseInt(audio.currentTime * 1000);
+}, false);
+
+audio.onended = function() {
+    console.log(a);
+    console.log(s);
+    console.log(d);
+    console.log(f);
+}
+
 window.addEventListener('keydown', function(e) {
+    console.log(e.key);
     if(e.key === 'Enter') {
+        // audio.play();
         start();
     }
+
+    // if(e.key === 'a') {
+    //     a.notes.push({delay: songPosition});
+    // }
+    // if(e.key === 's') {
+    //     s.notes.push({delay: songPosition});
+    // }
+    // if(e.key === 'd') {
+    //     d.notes.push({delay: songPosition});
+    // }
+    // if(e.key === 'f') {
+    //     f.notes.push({delay: songPosition});
+    // }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// let isPlaying = false;
+// let startTime;
+// let notes;
+
+// // Setup Event Listeners
+// window.addEventListener('keydown', function(e) {
+//     if(e.key === 'Enter') {
+//         start();
+//     }
+// });
 
 initializeNotes();
 
@@ -24,6 +114,7 @@ function initializeNotes() {
     let fTrack = document.querySelector('#f-track');
 
     // Setup Notes
+
     keybeats.controls.forEach(function(key, index) {
         key.notes.forEach(function(note) {
             noteElement = document.createElement('div');
@@ -47,14 +138,14 @@ function initializeNotes() {
             }
 
             trackElement.appendChild(noteElement);
-            notes = document.querySelectorAll('.note');
+            // notes = document.querySelectorAll('.note');
         });
     });
 }
 
 function start() {
-    isPlaying = true;
-    startTime = Date.now();
+    // isPlaying = true;
+    // startTime = Date.now();
     let audio = document.querySelector('#keybeats-audio');
 
     startTimer(keybeats.duration);
