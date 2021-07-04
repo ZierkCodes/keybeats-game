@@ -1,1324 +1,992 @@
+export const globalDuration = 2300;
+
 export const a = {
-  "track": "a-track",
-  "notes": [
+  track: "a-track",
+  next: 0,
+  notes: [
       {
-          "delay": 1073
+          delay: 1180
       },
       {
-          "delay": 2573
+          delay: 2933
       },
       {
-          "delay": 3074
+          delay: 4929
       },
       {
-          "delay": 4823
+          delay: 6682
       },
       {
-          "delay": 6075
+          delay: 8681
       },
       {
-          "delay": 6573
+          delay: 10433
       },
       {
-          "delay": 8572
+          delay: 12429
       },
       {
-          "delay": 10075
+          delay: 14178
       },
       {
-          "delay": 10574
+          delay: 16180
       },
       {
-          "delay": 12323
+          delay: 17928
       },
       {
-          "delay": 13825
+          delay: 19930
       },
       {
-          "delay": 14326
+          delay: 21682
       },
       {
-          "delay": 15322
+          delay: 23682
       },
       {
-          "delay": 16324
+          delay: 25430
       },
       {
-          "delay": 17575
+          delay: 27429
       },
       {
-          "delay": 18074
+          delay: 29180
       },
       {
-          "delay": 19826
+          delay: 31180
       },
       {
-          "delay": 21075
+          delay: 32931
       },
       {
-          "delay": 21821
+          delay: 34930
       },
       {
-          "delay": 23571
+          delay: 36681
       },
       {
-          "delay": 25075
+          delay: 38680
       },
       {
-          "delay": 25574
+          delay: 40428
       },
       {
-          "delay": 27322
+          delay: 42430
       },
       {
-          "delay": 28575
+          delay: 44179
       },
       {
-          "delay": 29324
+          delay: 46430
       },
       {
-          "delay": 31073
+          delay: 47178
       },
       {
-          "delay": 32575
+          delay: 47932
       },
       {
-          "delay": 33074
+          delay: 48932
       },
       {
-          "delay": 34822
+          delay: 49680
       },
       {
-          "delay": 36075
+          delay: 50679
       },
       {
-          "delay": 38573
+          delay: 51680
       },
       {
-          "delay": 40075
+          delay: 52682
       },
       {
-          "delay": 40576
+          delay: 54429
       },
       {
-          "delay": 42325
+          delay: 56432
       },
       {
-          "delay": 43575
+          delay: 58182
       },
       {
-          "delay": 44074
+          delay: 60181
       },
       {
-          "delay": 46073
+          delay: 61929
       },
       {
-          "delay": 47075
+          delay: 63932
       },
       {
-          "delay": 47824
+          delay: 65682
       },
       {
-          "delay": 48823
+          delay: 67678
       },
       {
-          "delay": 49822
+          delay: 69179
       },
       {
-          "delay": 50825
+          delay: 70932
       },
       {
-          "delay": 51824
+          delay: 73179
       },
       {
-          "delay": 52573
+          delay: 75181
       },
       {
-          "delay": 53575
+          delay: 75431
       },
       {
-          "delay": 54322
+          delay: 75681
       },
       {
-          "delay": 55575
+          delay: 76180
       },
       {
-          "delay": 56076
+          delay: 78432
       },
       {
-          "delay": 57322
+          delay: 81182
       },
       {
-          "delay": 58076
+          delay: 86431
       },
       {
-          "delay": 59074
+          delay: 87430
       },
       {
-          "delay": 59822
+          delay: 88180
       },
       {
-          "delay": 61072
+          delay: 90931
       },
       {
-          "delay": 61826
+          delay: 91930
       },
       {
-          "delay": 62825
+          delay: 94681
       },
       {
-          "delay": 63573
+          delay: 95683
       },
       {
-          "delay": 64822
+          delay: 96681
       },
       {
-          "delay": 65576
+          delay: 98681
       },
       {
-          "delay": 66575
+          delay: 100428
       },
       {
-          "delay": 67323
+          delay: 102430
       },
       {
-          "delay": 68572
+          delay: 104180
       },
       {
-          "delay": 70824
+          delay: 106179
       },
       {
-          "delay": 73075
+          delay: 107931
       },
       {
-          "delay": 74823
+          delay: 109931
       },
       {
-          "delay": 76826
+          delay: 111680
       },
       {
-          "delay": 78823
+          delay: 113680
       },
       {
-          "delay": 79825
+          delay: 115431
       },
       {
-          "delay": 81574
+          delay: 117428
       },
       {
-          "delay": 83575
+          delay: 119180
       },
       {
-          "delay": 85325
+          delay: 121180
       },
       {
-          "delay": 86323
+          delay: 122428
       },
       {
-          "delay": 88322
+          delay: 124431
       },
       {
-          "delay": 90073
+          delay: 126179
       },
       {
-          "delay": 92076
+          delay: 129180
       },
       {
-          "delay": 93823
+          delay: 130430
       },
       {
-          "delay": 95826
+          delay: 132430
       },
       {
-          "delay": 98572
+          delay: 134180
       },
       {
-          "delay": 100072
+          delay: 136181
       },
       {
-          "delay": 100575
+          delay: 137932
       },
       {
-          "delay": 102322
+          delay: 139930
       },
       {
-          "delay": 103825
+          delay: 141680
       },
       {
-          "delay": 104325
-      },
-      {
-          "delay": 106072
-      },
-      {
-          "delay": 107575
-      },
-      {
-          "delay": 108074
-      },
-      {
-          "delay": 109822
-      },
-      {
-          "delay": 111325
-      },
-      {
-          "delay": 111824
-      },
-      {
-          "delay": 113572
-      },
-      {
-          "delay": 115075
-      },
-      {
-          "delay": 115575
-      },
-      {
-          "delay": 117322
-      },
-      {
-          "delay": 118575
-      },
-      {
-          "delay": 119075
-      },
-      {
-          "delay": 121072
-      },
-      {
-          "delay": 122574
-      },
-      {
-          "delay": 123075
-      },
-      {
-          "delay": 124822
-      },
-      {
-          "delay": 126076
-      },
-      {
-          "delay": 126575
-      },
-      {
-          "delay": 128572
-      },
-      {
-          "delay": 130325
-      },
-      {
-          "delay": 132322
-      },
-      {
-          "delay": 134324
-      },
-      {
-          "delay": 136573
-      },
-      {
-          "delay": 138324
-      },
-      {
-          "delay": 140327
-      },
-      {
-          "delay": 142323
+          delay: 143681
       }
   ]
 };
 
 export const s = {
-  "track": "s-track",
-  "notes": [
+  track: "s-track",
+  next: 0,
+  notes: [
       {
-          "delay": 1322
+          delay: 1429
       },
       {
-          "delay": 2573
+          delay: 3182
       },
       {
-          "delay": 3324
+          delay: 5179
       },
       {
-          "delay": 5074
+          delay: 7181
       },
       {
-          "delay": 6323
+          delay: 8929
       },
       {
-          "delay": 7073
+          delay: 10932
       },
       {
-          "delay": 7575
+          delay: 12679
       },
       {
-          "delay": 8824
+          delay: 14682
       },
       {
-          "delay": 10075
+          delay: 16429
       },
       {
-          "delay": 10823
+          delay: 18183
       },
       {
-          "delay": 12821
+          delay: 20180
       },
       {
-          "delay": 13825
+          delay: 22182
       },
       {
-          "delay": 14573
+          delay: 23929
       },
       {
-          "delay": 15322
+          delay: 25932
       },
       {
-          "delay": 15572
+          delay: 27681
       },
       {
-          "delay": 16576
+          delay: 29682
       },
       {
-          "delay": 17575
+          delay: 31430
       },
       {
-          "delay": 18324
+          delay: 33432
       },
       {
-          "delay": 20074
+          delay: 35179
       },
       {
-          "delay": 21321
+          delay: 37182
       },
       {
-          "delay": 22074
+          delay: 38930
       },
       {
-          "delay": 23823
+          delay: 40932
       },
       {
-          "delay": 25075
+          delay: 42680
       },
       {
-          "delay": 25824
+          delay: 44682
       },
       {
-          "delay": 27572
+          delay: 55432
       },
       {
-          "delay": 28825
+          delay: 57430
       },
       {
-          "delay": 29573
+          delay: 59182
       },
       {
-          "delay": 31577
+          delay: 61180
       },
       {
-          "delay": 32575
+          delay: 62932
       },
       {
-          "delay": 33323
+          delay: 64681
       },
       {
-          "delay": 35073
+          delay: 66682
       },
       {
-          "delay": 36323
+          delay: 68680
       },
       {
-          "delay": 37323
+          delay: 69928
       },
       {
-          "delay": 38074
+          delay: 71931
       },
       {
-          "delay": 38822
+          delay: 73678
       },
       {
-          "delay": 40075
+          delay: 76428
       },
       {
-          "delay": 40823
+          delay: 77928
       },
       {
-          "delay": 42576
+          delay: 78931
       },
       {
-          "delay": 43823
+          delay: 80679
       },
       {
-          "delay": 44574
+          delay: 81682
       },
       {
-          "delay": 53575
+          delay: 83680
       },
       {
-          "delay": 54576
+          delay: 84428
       },
       {
-          "delay": 55575
+          delay: 85428
       },
       {
-          "delay": 56323
+          delay: 89181
       },
       {
-          "delay": 57573
+          delay: 90181
       },
       {
-          "delay": 58326
+          delay: 92931
       },
       {
-          "delay": 59323
+          delay: 93932
       },
       {
-          "delay": 60073
+          delay: 98931
       },
       {
-          "delay": 61072
+          delay: 100679
       },
       {
-          "delay": 62076
+          delay: 102682
       },
       {
-          "delay": 63072
+          delay: 104432
       },
       {
-          "delay": 63823
+          delay: 106430
       },
       {
-          "delay": 65077
+          delay: 108183
       },
       {
-          "delay": 65826
+          delay: 110181
       },
       {
-          "delay": 66823
+          delay: 112183
       },
       {
-          "delay": 67573
+          delay: 113930
       },
       {
-          "delay": 68821
+          delay: 115932
       },
       {
-          "delay": 70325
+          delay: 117680
       },
       {
-          "delay": 71073
+          delay: 119683
       },
       {
-          "delay": 72571
+          delay: 121433
       },
       {
-          "delay": 73326
+          delay: 122930
       },
       {
-          "delay": 74574
+          delay: 124680
       },
       {
-          "delay": 75073
+          delay: 126680
       },
       {
-          "delay": 76321
+          delay: 129679
       },
       {
-          "delay": 77072
+          delay: 131432
       },
       {
-          "delay": 78324
+          delay: 133179
       },
       {
-          "delay": 78823
+          delay: 135182
       },
       {
-          "delay": 80071
+          delay: 136929
       },
       {
-          "delay": 81325
+          delay: 138932
       },
       {
-          "delay": 81822
+          delay: 140680
       },
       {
-          "delay": 83072
-      },
-      {
-          "delay": 83822
-      },
-      {
-          "delay": 85076
-      },
-      {
-          "delay": 85575
-      },
-      {
-          "delay": 86076
-      },
-      {
-          "delay": 86822
-      },
-      {
-          "delay": 88076
-      },
-      {
-          "delay": 88573
-      },
-      {
-          "delay": 89823
-      },
-      {
-          "delay": 90573
-      },
-      {
-          "delay": 91826
-      },
-      {
-          "delay": 92325
-      },
-      {
-          "delay": 93574
-      },
-      {
-          "delay": 94323
-      },
-      {
-          "delay": 95576
-      },
-      {
-          "delay": 96076
-      },
-      {
-          "delay": 98822
-      },
-      {
-          "delay": 100072
-      },
-      {
-          "delay": 100824
-      },
-      {
-          "delay": 102572
-      },
-      {
-          "delay": 103825
-      },
-      {
-          "delay": 104574
-      },
-      {
-          "delay": 106323
-      },
-      {
-          "delay": 107575
-      },
-      {
-          "delay": 108325
-      },
-      {
-          "delay": 110075
-      },
-      {
-          "delay": 111325
-      },
-      {
-          "delay": 112075
-      },
-      {
-          "delay": 112573
-      },
-      {
-          "delay": 113824
-      },
-      {
-          "delay": 115075
-      },
-      {
-          "delay": 115826
-      },
-      {
-          "delay": 117572
-      },
-      {
-          "delay": 118825
-      },
-      {
-          "delay": 119574
-      },
-      {
-          "delay": 121322
-      },
-      {
-          "delay": 122574
-      },
-      {
-          "delay": 123324
-      },
-      {
-          "delay": 125074
-      },
-      {
-          "delay": 126326
-      },
-      {
-          "delay": 127071
-      },
-      {
-          "delay": 128822
-      },
-      {
-          "delay": 130572
-      },
-      {
-          "delay": 131824
-      },
-      {
-          "delay": 132574
-      },
-      {
-          "delay": 134075
-      },
-      {
-          "delay": 134824
-      },
-      {
-          "delay": 136323
-      },
-      {
-          "delay": 136822
-      },
-      {
-          "delay": 138072
-      },
-      {
-          "delay": 138824
-      },
-      {
-          "delay": 140072
-      },
-      {
-          "delay": 140572
-      },
-      {
-          "delay": 141822
-      },
-      {
-          "delay": 142574
+          delay: 142682
       }
   ]
 };
 
 export const d = {
-  "track": "d-track",
-  "notes": [
+  track: "d-track",
+  next: 0,
+  notes: [
       {
-          "delay": 1826
+          delay: 1679
       },
       {
-          "delay": 2573
+          delay: 3682
       },
       {
-          "delay": 3573
+          delay: 4430
       },
       {
-          "delay": 4322
+          delay: 5429
       },
       {
-          "delay": 5576
+          delay: 7432
       },
       {
-          "delay": 6323
+          delay: 8181
       },
       {
-          "delay": 7826
+          delay: 9179
       },
       {
-          "delay": 9326
+          delay: 11181
       },
       {
-          "delay": 10075
+          delay: 11930
       },
       {
-          "delay": 11073
+          delay: 12929
       },
       {
-          "delay": 11824
+          delay: 15182
       },
       {
-          "delay": 13076
+          delay: 16680
       },
       {
-          "delay": 13825
+          delay: 18681
       },
       {
-          "delay": 14573
+          delay: 19431
       },
       {
-          "delay": 15073
+          delay: 20429
       },
       {
-          "delay": 15823
+          delay: 22432
       },
       {
-          "delay": 16826
+          delay: 23181
       },
       {
-          "delay": 17575
+          delay: 24179
       },
       {
-          "delay": 18573
+          delay: 26182
       },
       {
-          "delay": 19322
+          delay: 26931
       },
       {
-          "delay": 20575
+          delay: 27929
       },
       {
-          "delay": 21321
+          delay: 29932
       },
       {
-          "delay": 22322
+          delay: 30682
       },
       {
-          "delay": 23072
+          delay: 31681
       },
       {
-          "delay": 24326
+          delay: 32430
       },
       {
-          "delay": 25075
+          delay: 33682
       },
       {
-          "delay": 26073
+          delay: 34431
       },
       {
-          "delay": 26822
+          delay: 35430
       },
       {
-          "delay": 28076
+          delay: 36178
       },
       {
-          "delay": 28825
+          delay: 37431
       },
       {
-          "delay": 29825
+          delay: 37930
       },
       {
-          "delay": 30322
+          delay: 39179
       },
       {
-          "delay": 31826
+          delay: 40182
       },
       {
-          "delay": 32822
+          delay: 41181
       },
       {
-          "delay": 33576
+          delay: 41931
       },
       {
-          "delay": 34322
+          delay: 42929
       },
       {
-          "delay": 35575
+          delay: 43678
       },
       {
-          "delay": 36323
+          delay: 44932
       },
       {
-          "delay": 37076
+          delay: 45681
       },
       {
-          "delay": 37823
+          delay: 53680
       },
       {
-          "delay": 39326
+          delay: 55932
       },
       {
-          "delay": 40075
+          delay: 57680
       },
       {
-          "delay": 41072
+          delay: 59682
       },
       {
-          "delay": 41822
+          delay: 61430
       },
       {
-          "delay": 43076
+          delay: 63432
       },
       {
-          "delay": 43823
+          delay: 65180
       },
       {
-          "delay": 44823
+          delay: 67182
       },
       {
-          "delay": 45573
+          delay: 68929
       },
       {
-          "delay": 54076
+          delay: 70432
       },
       {
-          "delay": 55074
+          delay: 72430
       },
       {
-          "delay": 55822
+          delay: 74182
       },
       {
-          "delay": 56822
+          delay: 76679
       },
       {
-          "delay": 57824
+          delay: 77682
       },
       {
-          "delay": 58825
+          delay: 79431
       },
       {
-          "delay": 59574
+          delay: 80179
       },
       {
-          "delay": 60572
+          delay: 82182
       },
       {
-          "delay": 61325
+          delay: 83181
       },
       {
-          "delay": 62575
+          delay: 84179
       },
       {
-          "delay": 63326
+          delay: 84932
       },
       {
-          "delay": 64322
+          delay: 85932
       },
       {
-          "delay": 65321
+          delay: 89683
       },
       {
-          "delay": 66326
+          delay: 90682
       },
       {
-          "delay": 67074
+          delay: 93432
       },
       {
-          "delay": 68072
+          delay: 94431
       },
       {
-          "delay": 69326
+          delay: 99179
       },
       {
-          "delay": 70075
+          delay: 100928
       },
       {
-          "delay": 71323
+          delay: 101930
       },
       {
-          "delay": 72322
+          delay: 102929
       },
       {
-          "delay": 73576
+          delay: 104932
       },
       {
-          "delay": 74324
+          delay: 105432
       },
       {
-          "delay": 75572
+          delay: 106678
       },
       {
-          "delay": 76075
+          delay: 108682
       },
       {
-          "delay": 77325
+          delay: 109431
       },
       {
-          "delay": 78071
+          delay: 110428
       },
       {
-          "delay": 79326
+          delay: 112432
       },
       {
-          "delay": 80325
+          delay: 114179
       },
       {
-          "delay": 80825
+          delay: 114932
       },
       {
-          "delay": 82071
+          delay: 116182
       },
       {
-          "delay": 82573
+          delay: 116682
       },
       {
-          "delay": 84073
+          delay: 117930
       },
       {
-          "delay": 84573
+          delay: 118678
       },
       {
-          "delay": 85824
+          delay: 120182
       },
       {
-          "delay": 87071
+          delay: 120681
       },
       {
-          "delay": 87578
+          delay: 121681
       },
       {
-          "delay": 89075
+          delay: 123178
       },
       {
-          "delay": 89574
+          delay: 123931
       },
       {
-          "delay": 90823
+          delay: 125181
       },
       {
-          "delay": 91572
+          delay: 125679
       },
       {
-          "delay": 92825
+          delay: 127183
       },
       {
-          "delay": 93324
+          delay: 127682
       },
       {
-          "delay": 94572
+          delay: 129928
       },
       {
-          "delay": 95324
+          delay: 132680
       },
       {
-          "delay": 96576
+          delay: 134683
       },
       {
-          "delay": 99322
+          delay: 136432
       },
       {
-          "delay": 100072
+          delay: 138428
       },
       {
-          "delay": 101073
+          delay: 140180
       },
       {
-          "delay": 101823
-      },
-      {
-          "delay": 103076
-      },
-      {
-          "delay": 103825
-      },
-      {
-          "delay": 104823
-      },
-      {
-          "delay": 105572
-      },
-      {
-          "delay": 106822
-      },
-      {
-          "delay": 107575
-      },
-      {
-          "delay": 108573
-      },
-      {
-          "delay": 109322
-      },
-      {
-          "delay": 110573
-      },
-      {
-          "delay": 111325
-      },
-      {
-          "delay": 112326
-      },
-      {
-          "delay": 114324
-      },
-      {
-          "delay": 115075
-      },
-      {
-          "delay": 116075
-      },
-      {
-          "delay": 116826
-      },
-      {
-          "delay": 118073
-      },
-      {
-          "delay": 118825
-      },
-      {
-          "delay": 119824
-      },
-      {
-          "delay": 120573
-      },
-      {
-          "delay": 121826
-      },
-      {
-          "delay": 122574
-      },
-      {
-          "delay": 123575
-      },
-      {
-          "delay": 124324
-      },
-      {
-          "delay": 125573
-      },
-      {
-          "delay": 126326
-      },
-      {
-          "delay": 127324
-      },
-      {
-          "delay": 128076
-      },
-      {
-          "delay": 129322
-      },
-      {
-          "delay": 129826
-      },
-      {
-          "delay": 130824
-      },
-      {
-          "delay": 131322
-      },
-      {
-          "delay": 132822
-      },
-      {
-          "delay": 133576
-      },
-      {
-          "delay": 135074
-      },
-      {
-          "delay": 136072
-      },
-      {
-          "delay": 137076
-      },
-      {
-          "delay": 137825
-      },
-      {
-          "delay": 139072
-      },
-      {
-          "delay": 139822
-      },
-      {
-          "delay": 140826
-      },
-      {
-          "delay": 141575
-      },
-      {
-          "delay": 143074
+          delay: 142183
       }
   ]
 };
 
 export const f = {
-  "track": "f-track",
-  "notes": [
+  track: "f-track",
+  next: 0,
+  notes: [
       {
-          "delay": 2076
+          delay: 1928
       },
       {
-          "delay": 3823
+          delay: 3931
       },
       {
-          "delay": 5823
+          delay: 5678
       },
       {
-          "delay": 8072
+          delay: 7682
       },
       {
-          "delay": 9573
+          delay: 9430
       },
       {
-          "delay": 11322
+          delay: 11431
       },
       {
-          "delay": 13325
+          delay: 13178
       },
       {
-          "delay": 14823
+          delay: 15680
       },
       {
-          "delay": 17076
+          delay: 16930
       },
       {
-          "delay": 18822
+          delay: 18928
       },
       {
-          "delay": 20825
+          delay: 20928
       },
       {
-          "delay": 22823
+          delay: 22680
       },
       {
-          "delay": 24576
+          delay: 24678
       },
       {
-          "delay": 26322
+          delay: 26432
       },
       {
-          "delay": 28326
+          delay: 28178
       },
       {
-          "delay": 32075
+          delay: 30181
       },
       {
-          "delay": 33825
+          delay: 31929
       },
       {
-          "delay": 35826
+          delay: 33931
       },
       {
-          "delay": 36824
+          delay: 35682
       },
       {
-          "delay": 39576
+          delay: 37681
       },
       {
-          "delay": 41325
+          delay: 39679
       },
       {
-          "delay": 43326
+          delay: 41431
       },
       {
-          "delay": 45322
+          delay: 43428
       },
       {
-          "delay": 69576
+          delay: 45182
       },
       {
-          "delay": 71822
+          delay: 54930
       },
       {
-          "delay": 74074
+          delay: 56931
       },
       {
-          "delay": 75822
+          delay: 58680
       },
       {
-          "delay": 77824
+          delay: 60681
       },
       {
-          "delay": 80576
+          delay: 62432
       },
       {
-          "delay": 82573
+          delay: 64430
       },
       {
-          "delay": 84326
+          delay: 66178
       },
       {
-          "delay": 87325
+          delay: 68180
       },
       {
-          "delay": 89325
+          delay: 69678
       },
       {
-          "delay": 91072
+          delay: 71432
       },
       {
-          "delay": 93076
+          delay: 72680
       },
       {
-          "delay": 94825
+          delay: 74682
       },
       {
-          "delay": 96824
+          delay: 77178
       },
       {
-          "delay": 99576
+          delay: 79680
       },
       {
-          "delay": 101324
+          delay: 82682
       },
       {
-          "delay": 103322
+          delay: 86929
       },
       {
-          "delay": 105326
+          delay: 87680
       },
       {
-          "delay": 107076
+          delay: 88683
       },
       {
-          "delay": 108821
+          delay: 91429
       },
       {
-          "delay": 110826
+          delay: 92431
       },
       {
-          "delay": 114572
+          delay: 95181
       },
       {
-          "delay": 116323
+          delay: 96181
       },
       {
-          "delay": 118326
+          delay: 99679
       },
       {
-          "delay": 120326
+          delay: 101428
       },
       {
-          "delay": 122075
+          delay: 103182
       },
       {
-          "delay": 123822
+          delay: 105182
       },
       {
-          "delay": 125826
+          delay: 106932
       },
       {
-          "delay": 127823
+          delay: 108932
       },
       {
-          "delay": 129573
+          delay: 110929
       },
       {
-          "delay": 131072
+          delay: 112682
       },
       {
-          "delay": 133326
+          delay: 114680
       },
       {
-          "delay": 135572
+          delay: 116430
       },
       {
-          "delay": 137572
+          delay: 118181
       },
       {
-          "delay": 139323
+          delay: 120182
       },
       {
-          "delay": 141076
+          delay: 122179
       },
       {
-          "delay": 143572
+          delay: 123682
+      },
+      {
+          delay: 125429
+      },
+      {
+          delay: 127432
+      },
+      {
+          delay: 130933
+      },
+      {
+          delay: 131931
+      },
+      {
+          delay: 133680
+      },
+      {
+          delay: 135681
+      },
+      {
+          delay: 137430
+      },
+      {
+          delay: 139431
+      },
+      {
+          delay: 141180
+      },
+      {
+          delay: 143182
       }
   ]
 };
-
-export const globalDuration = 2000;
 
 export const keybeats = {
   duration: 146313,

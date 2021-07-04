@@ -9,19 +9,24 @@
     <title>KeyBeats</title>
 </head>
 <body>
+    
+
     <!--Overlays-->
     <!-- <div class="overlay" id="losing" hidden></div>
     <div class="overlay" id="normal" ></div>
     <div class="overlay" id="hard" hidden></div> -->
     <!--Song-->
     <audio id="keybeats-audio" src="assets/audio/KeyBeats.mp3"></audio>
+    <canvas id="output" height="200" width="600"></canvas>
 
     <section id="starting-screen" hidden>
 
     </section>
 
+    <div id="meter">
+        <span style="width:100%;"><span id="progress"></span></span>
+    </div>
     <section id="game">
-    
         <div id="track">
             <div id="a-track"></div>
             <div id="s-track"></div>
@@ -30,20 +35,20 @@
             <div id="hit-box"></div>
         </div>
         <div>
-            <div id="score">
-                <div>SCORE</div>
-                <div>0</div>
-            </div>
+            <div id="score"><strong>
+                <div class="text">SCORE</div>
+                <div class="number">0</div>
+            </div></strong>
             <div id="controls">
-                <div>A</div>
-                <div>S</div>
-                <div>D</div>
-                <div>F</div>
-            </div>
-            <div>
-                <div id="combo">COMBO</div>
-                <div>0x</div>
-            </div>
+                <div class="letters">A</div>
+                <div class="letters">S</div>
+                <div class="letters">D</div>
+                <div class="letters">F</div>
+            </div><strong>
+            <div id="combo">
+                <div class="text">COMBO</div>
+                <div class="number">0x</div>
+            </div></strong>
         </div>
 
     </section>
@@ -51,5 +56,6 @@
     <section id="results" hidden>
 
     </section>
+    <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>
 </body>
 </html>
