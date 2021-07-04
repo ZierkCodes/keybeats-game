@@ -1,7 +1,7 @@
 #output {
     position: absolute;
     left: 100px;
-    top: 150px;
+    top: 60px;
 }
 
 body {
@@ -57,11 +57,12 @@ body::after {
     background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(17, 81, 149) 100%);
     box-shadow: 0px 0px 6px 3px rgba(160,216,255,0.6);
     -webkit-transform: perspective(200px) rotateX(40deg);
+    transform: perspective(200px) rotateX(40deg);
     margin: 0 auto;
     position: relative;
     /* top: -130px; */
     /* top: -100px; */
-    top: 0;
+    top: -100px;
     z-index: 10;
 }
 
@@ -130,7 +131,7 @@ body::after {
     width: 90%;
     position: absolute;
     background: #145991;
-    top: 110px;
+    top: 15px;
     left: 36px;
     z-index: 3500;
     opacity: 90%;
@@ -143,8 +144,8 @@ body::after {
 
 #progress {
     background-color: #d2effc;
-    animation: progressBar 148.4s ease-in-out;
-    animation-fill-mode:both; 
+    animation: progressBar 148.4s linear;
+    animation-fill-mode: both; 
     box-shadow: 0px 0px 3px 1px rgba(160,216,255,0.6);
 }
 
@@ -189,8 +190,8 @@ body::after {
     position: relative;
     display: flex;
     flex-direction: column;
-    left: 179px;
-    top: 103px;
+    left: 180px;
+    top: 3px;
 }
 
 #controls {
@@ -198,7 +199,7 @@ body::after {
     height: 25px;
     margin: 0 auto;
     position: relative;
-    top: 89px;
+    top: -10px;
     left: -1.5px;
     display: flex;
     justify-content: space-evenly;
@@ -211,6 +212,6 @@ body::after {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    left: 548px;
-    top: 37px;
+    left: 550px;
+    top: -60px;
 }

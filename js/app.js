@@ -1,10 +1,20 @@
+/**
+ * KeyBeats – app.js
+ * 
+ * @credits
+ * Wave.js     https://foobar404.github.io/Wave.js
+ * Author      Foobar404
+ * 
+ *              
+ */
+
 import {a, s, d, f, globalDuration, keybeats} from './keybeats_test.js';
 
 let audio = document.querySelector('#keybeats-audio');
 let canvas = document.querySelector('#output');
 
 let wave = new Wave();
-
+// audio wave from https://foobar404.github.io/Wave.js/?wave=orbs#/
 // document.addEventListener('click', (e) => {
 //     console.log(e.currentTarget);
     
