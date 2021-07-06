@@ -6,58 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="js/app.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     <title>KeyBeats</title>
 </head>
 <body>
     
 
-    <!--Overlays-->
-    <!-- <div class="overlay" id="losing" hidden></div>
-    <div class="overlay" id="normal" ></div>
-    <div class="overlay" id="hard" hidden></div> -->
+
     <!--Song-->
     <audio id="keybeats-audio" src="assets/audio/KeyBeats.mp3"></audio>
-    <canvas id="output" height="200" width="600" ></canvas>
+    <canvas id="output" height="300" width="900" ></canvas>
 
     <section id="starting-screen" hidden>
 
     </section>
 
-    <div id="meter">
+    <div id="meter" class="normal">
         <span style="width:100%;"><span id="progress"></span></span>
     </div>
     <section id="game">
-        <div id="track">
-            <div id="a-track">
+        <div id="track" class="normal">
+            <div id="a-track" class="normal">
 
 
             </div>
-            <div id="s-track">
+            <div id="s-track" class="normal">
 
 
             </div>
-            <div id="d-track">
+            <div id="d-track" class="normal">
 
 
             </div>
-            <div id="f-track">
+            <div id="f-track" class="normal">
 
 
             </div>
-            <div id="hit-box"></div>
+            <div id="hit-box" class="normal"></div>
         </div>
         <div>
-            <div id="score"><strong>
+            <div id="score" class="normal"><strong>
                 <div class="text">SCORE</div>
                 <div class="number">0</div>
             </div></strong>
-            <div id="controls">
+            <div id="controls" class="normal">
                 <div class="letters">A</div>
                 <div class="letters">S</div>
                 <div class="letters">D</div>
                 <div class="letters">F</div>
             </div><strong>
-            <div id="combo">
+            <div id="combo" class="normal">
                 <div class="text">COMBO</div>
                 <div class="number">0x</div>
             </div></strong>
@@ -65,7 +63,7 @@
 
     </section>
 
-    <section id="results" hidden>
+    <section id="score-board" hidden>
 
     </section>
     <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>

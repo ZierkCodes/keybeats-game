@@ -1,4 +1,4 @@
-export const globalDuration = 2300;
+export const globalDuration = 4000;
 
 export const a = {
   track: "a-track",

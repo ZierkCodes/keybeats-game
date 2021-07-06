@@ -1,21 +1,21 @@
 #output {
     position: absolute;
-    left: 100px;
+    left: calc(100vw / 2 - 450px);
     top: 60px;
 }
 
 body {
-    background: rgb(2, 21, 42);
+    background: #000000;
     position: relative;
     margin: 0;
     padding: 0;
     width: 100vw;
-    height: 120vh;
+    height: 100vh;
 }
 
 body::after {
     content: "";
-    position:absolute;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -24,37 +24,13 @@ body::after {
     z-index: 1;
     width: 100%;
     height: 100%;
-    background: url('../assets/images/Space_Background.jpg') top center / cover no-repeat;
-}
-
-/* Overlays */
-.overlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    z-index: 1000;
-    pointer-events: none;
-}
-
-#normal {
-    background-color: #04015e;
-}
-
-#hard {
-    background-color: #ff217a;
-}
-
-#losing {
-    background-color: #000000;
 }
 
 /* Game */
 #track {
-    height: 320px;
-    width: 100px;
-    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(17, 81, 149) 100%);
+    height: 370px;
+    width: 120px;
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #115195 100%);
     box-shadow: 0px 0px 6px 3px rgba(160,216,255,0.6);
     -webkit-transform: perspective(200px) rotateX(40deg);
     transform: perspective(200px) rotateX(40deg);
@@ -68,10 +44,10 @@ body::after {
 
 #hit-box {
     position: absolute;
-    width: 100px;
+    width: 120px;
     height: 4px;
-    background-color: lightcyan;
-    top: 320px;
+    background-color: #e0ffff;
+    top: 366px;
     box-shadow: 0px 0px 6px 2px rgba(160,216,255,0.6);
 }
 
@@ -79,34 +55,30 @@ body::after {
 #s-track,
 #d-track,
 #f-track {
-    position: relative;
-    height: 270px;
-    background-color: lightcyan;
+    position: absolute;
+    height: 370px;
+    background-color: #e0ffff;
     box-shadow: 0px 0px 6px 1px rgba(160,216,255,0.6);
 }
 
 #a-track {
     width: 1.5px;
-    left: 16px;
-    top: 50px;
+    left: calc(20% - 1px);
 }
 
 #s-track {
     width: 2px;
-    left: 37px;
-    top: -220px;    
+    left: calc(40% - 1px);
 }
 
 #d-track {
     width: 1.5px;
-    left: 60px;
-    top: -490px;
+    left: calc(60% - 1px);
 }
 
 #f-track {
     width: 2px;
-    left: 81px;
-    top: -760px;
+    left: calc(80% - 1px);
 }
 
 .note {
@@ -115,20 +87,20 @@ body::after {
     height: 5px;
     top: -70px;
     left: -7px;
-    background-color: lightcyan;
+    background-color: #e0ffff;
     box-shadow: 0px 0px 6px 1px rgba(160,216,255,0.6);
 }
 
 @keyframes moveNote {
     0% { top: 0px }
-    100% { top: 270px }
+    100% { top: 366px }
 }
 
 /* score, combo, controls, progress bar */
 
 #meter { 
-    height: 4px;
-    width: 90%;
+    height: 6px;
+    width: 93%;
     position: absolute;
     background: #145991;
     top: 15px;
@@ -159,59 +131,163 @@ body::after {
 #combo {
     text-shadow: 0px 0px 5px rgba(142,204,206,0.87);
     z-index: 2;
-    font-family: sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .letters {
-    color: rgba(210, 236, 255, 0.6);
+    color: #e0ffff;
     /* background-color: ; */
-    height: 25px;
-    width: 25px;
+    height: 40px;
+    width: 40px;
     text-align: center;
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 2px;
     box-shadow: 0px 0px 3px 1px rgba(160,216,255,0.6);
-    padding: 5px 3px 1px 3px;
-    border: solid 1.5px lightcyan;  
+    padding: 4px 3px 0 3px;
+    border: solid 2px #e0ffff;  
 }
 
 
 .text {
     font-size: 8px;
+    text-align: right;
 }
 
 .number {
     font-size: 25px;
+    text-align: right;
 }
 
 #score {
-    color: rgb(238, 254, 255);
-    width: 80px;
+    color: #eefeff;
+    width: 100px;
     position: relative;
     display: flex;
     flex-direction: column;
-    left: 180px;
+    left: 0px;
     top: 3px;
 }
 
 #controls {
-    width: 200px;
+    width: 260px;
     height: 25px;
     margin: 0 auto;
     position: relative;
-    top: -10px;
-    left: -1.5px;
+    top: 60px;
+    left: -1px;
     display: flex;
     justify-content: space-evenly;
 }
 
 #combo {
-    color: rgb(238, 254, 255);
+    color: #eefeff;
     width: 100px;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    left: 550px;
-    top: -60px;
+    left: 0px;
+    top: -67px;
+}
+
+/* Color changers for song intensity and your state of the game from normal to hard, and if you miss too many notes then losing*/
+
+/* score div */
+
+#score.normal,
+#combo.normal,
+#controls.normal {
+    text-shadow: 0px 0px 5px rgba(142,204,206,0.87);
+    color: #e0ffff;
+}
+
+#score.hard,
+#combo.hard,
+#controls.hard {
+    text-shadow: 0px 0px 5px rgba(255, 223, 249, 0.8);
+    color: #feecfc;
+}
+
+#score.losing,
+#combo.losing,
+.letters.losing {
+    text-shadow: #ffffff;
+    color: #ffffff;
+}
+
+.letters.normal {
+    border: solid 1.5px #e0ffff;  
+    color: #e0ffff;
+}
+
+.letters.hard {
+    box-shadow: 0px 0px 3px 1px rgba(255, 223, 249, 0.6);
+    border: solid 1.5px #fed8fd;  
+}
+
+.letters.losing {
+    border: solid 1.5px #ffffff;  
+    color: #ffffff;
+}
+
+#hit-box.normal,
+#progress.normal,
+#a-track.normal,
+#s-track.normal,
+#d-track.normal,
+#f-track.normal {
+    background-color: #e0ffff;
+    box-shadow: 0px 0px 6px 2px rgba(160,216,255,0.6);
+}
+
+#hit-box.hard,
+#progress.hard,
+#a-track.hard,
+#s-track.hard,
+#d-track.hard,
+#f-track.hard {
+    background-color: #fef5fd;
+    box-shadow: 0px 0px 6px 2px rgba(255, 223, 249, 0.6);
+}
+
+#hit-box.losing,
+#progress.losing,
+#a-track.losing,
+#s-track.losing,
+#d-track.losing,
+#f-track.losing {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 6px 2px rgba(255, 255, 255, 0.6);
+}
+
+#track.normal {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #115195 100%);
+    box-shadow: 0px 0px 6px 3px rgba(160,216,255,0.6);
+}
+
+#track.hard {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #9e6396 100%);
+    box-shadow: 0px 0px 6px 3px rgba(255, 223, 249, 0.6);
+}
+
+#track.losing {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #4c4c4c 100%);
+    box-shadow: 0px 0px 6px 3px rgba(233, 233, 233, 0.6);
+}
+
+/* song progress meter */
+
+#meter.normal {
+    background-color: #145991;
+    box-shadow: ;
+}
+
+#meter.hard {
+    background-color: #603d5c;
+    box-shadow: ;
+}
+
+#meter.losing {
+    background-color: #5f5f5f;
+    box-shadow: ;
 }
