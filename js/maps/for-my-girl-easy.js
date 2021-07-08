@@ -442,6 +442,7 @@ export let f = {
 }
 export let song = {
     "name": "For My Girl",
+    "id": "for-my-girl",
     "src": "assets/audio/music/for-my-girl.mp3",
     "duration": 115.252225,
     "globalDuration": 4,

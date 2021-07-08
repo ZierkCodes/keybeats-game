@@ -851,6 +851,7 @@ export let f = {
 
 export let song = {
     "name": "Space Cowboy",
+    "id": "space-cowboy",
     "src": "assets/audio/music/space-cowboy.mp3",
     "duration": 118.439184,
     "globalDuration": 3,

@@ -116,11 +116,15 @@
  * @var streaks - Allows us to keep track of our streaks. Miss streaks tell us if the player is going to fail, and combo streaks keep track of our multiplier.
  */
 
+const selectBtns = document.querySelectorAll('.select-btn')
+const startScreen = document.querySelector('#starting-screen')
+const gameOverModal = document.querySelector('#game-over')
+const newSongBtns = document.querySelectorAll('.select-new-song')
+const playAgainBtns = document.querySelectorAll('.play-again')
 
 const game = document.querySelector('#game') 
 const track = document.querySelector('#track')
 const tracks = document.querySelectorAll('.track')
-const audio = document.querySelector('#audio')
 const controls = document.querySelectorAll('.letters')
 const progressBar = document.querySelector('#progress')
 const gameOverSFX = document.querySelector('#game-over-audio')
@@ -129,11 +133,12 @@ const scoreEl = document.querySelector('#score .number')
 const comboEl = document.querySelector('#combo .number')
 const hitsEl = document.querySelector('#hits')
 
+let audio = document.querySelector('#audio')
 
 let songMap;
 let startTime;
 let fadeInterval;
-let wave = new Wave();
+let wave;
 let scoreBoard = [];
 let playing = false;
 let score = 0;
@@ -168,26 +173,87 @@ let streaks = {
     top: 0 
 }
 
+// ? =============================================================================
+// ? SECTION 2: EVENT LISTENERS
+// ? =============================================================================
 
-/**
- * * Note: This will be updated to be called when a button is clicked that will pass the correct data so we don't have to manually set it.
- * 1.  Add a 'keydown' event listener to document and pass @param e as a parameter in the callback function.
- * 2.  Create an @if conditional that checks:
- *          -> If @param e.key is equal to 'Enter'
- *                  -> call @function selectSong and pass your choice of song and difficulty as a string:
- *                              SONGS:              DIFFICULTIES:
- *                              keybeats            easy
- *                              for-my-girl         normal
- *                              funk-that           hard
- *                              space-cowboy                        
- */
-
-/**
-selectBtn.addEventListener('click', (e) => {
-    selectSong(e.target.dataset.song, e.target.dataset.difficulty);
+selectBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+        selectSong(event.target.dataset.song, event.target.dataset.difficulty)
+    })
 });
- */
 
+newSongBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+        resetGame();
+        // Leaderboard dispaly none
+        startScreen.style.display = 'flex'
+    })
+})
+
+playAgainBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+        resetGame();
+        // If high scores screen .display, hide it
+        selectSong(gameOverModal.dataset.song, gameOverModal.dataset.difficulty)
+        // selectSong(songMap.song.id, songMap.song.difficulty);
+    });
+});
+
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'a' && keyPressed.a === false) {
+        keyPressed.a = true
+        controls[0].classList.add('pressed');
+        if(playing && tracks[0].firstChild) {
+            resolveHit(0);
+        }
+    } else if(e.key === 's' && keyPressed.s === false) {
+        keyPressed.s = true
+        controls[1].classList.add('pressed');
+        if(playing && tracks[1].firstChild) {
+            resolveHit(1);
+        }
+    } else if(e.key === 'd' && keyPressed.d === false) {
+        keyPressed.d = true
+        controls[2].classList.add('pressed');
+        if(playing && tracks[2].firstChild) {
+            resolveHit(2);
+        }
+    } else if(e.key === 'f' && keyPressed.f === false) {
+        keyPressed.f = true
+        controls[3].classList.add('pressed');
+        if(playing && tracks[3].firstChild) {
+            resolveHit(3);
+        }
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    if(e.key === 'a') {
+        keyPressed.a = false;
+        controls[0].classList.remove('pressed');
+    } else if(e.key === 's') {
+        keyPressed.s = false;
+        controls[1].classList.remove('pressed');
+    } else if(e.key === 'd') {
+        keyPressed.d = false;
+        controls[2].classList.remove('pressed');
+    } else if(e.key === 'f') {
+        keyPressed.f = false;
+        controls[3].classList.remove('pressed');
+    }
+});
+
+track.addEventListener('animationend' , (e) => {
+    updateCombo('miss')
+    updateView('miss')
+    e.target.remove()
+    songMap.song.tracks[e.target.dataset.trackIndex].next++;
+});
+
+hitsEl.addEventListener('animationend', (e) => {
+    e.target.remove()
+});
 
 // ? =============================================================================
 // ? SECTION 3: DEFINE FUNCTIONS
@@ -346,19 +412,21 @@ function importSongMap(filepath) {
     })
 }
 
-const startScreen = document.querySelector('#starting-screen')
-
 function initializeGame(mapModule) {
+    console.log("INITIALIZING GAME");
     songMap = mapModule;
     audio.src = songMap.song.src;
+    audio.load();
+    console.log(audio);
+
+    game.className = '';
     game.classList.add(songMap.song.colorScheme);
 
     // Remove Hidden Attribute of Start Screen
-    startScreen.setAttribute('hidden', true);
-    game.removeAttribute('hidden');
+    startScreen.style.display = 'none';
+    game.style.display = 'block';
 
     // create the notes
-
     let html;
     songMap.song.tracks.forEach((key, index) => {
         key.notes.forEach((note) => {
@@ -374,75 +442,25 @@ function initializeGame(mapModule) {
         });
     });
 
-    document.addEventListener('keydown', (e) => {
-        if(e.key === 'a' && keyPressed.a === false) {
-            keyPressed.a = true
-            controls[0].classList.add('pressed');
-            if(playing && tracks[0].firstChild) {
-                resolveHit(0);
-            }
-        } else if(e.key === 's' && keyPressed.s === false) {
-            keyPressed.s = true
-            controls[1].classList.add('pressed');
-            if(playing && tracks[1].firstChild) {
-                resolveHit(1);
-            }
-        } else if(e.key === 'd' && keyPressed.d === false) {
-            keyPressed.d = true
-            controls[2].classList.add('pressed');
-            if(playing && tracks[2].firstChild) {
-                resolveHit(2);
-            }
-        } else if(e.key === 'f' && keyPressed.f === false) {
-            keyPressed.f = true
-            controls[3].classList.add('pressed');
-            if(playing && tracks[3].firstChild) {
-                resolveHit(3);
-            }
-        }
-    });
-
-    document.addEventListener('keyup', (e) => {
-        if(e.key === 'a') {
-            keyPressed.a = false;
-            controls[0].classList.remove('pressed');
-        } else if(e.key === 's') {
-            keyPressed.s = false;
-            controls[1].classList.remove('pressed');
-        } else if(e.key === 'd') {
-            keyPressed.d = false;
-            controls[2].classList.remove('pressed');
-        } else if(e.key === 'f') {
-            keyPressed.f = false;
-            controls[3].classList.remove('pressed');
-        }
-    });
-
-    track.addEventListener('animationend' , (e) => {
-        updateCombo('miss')
-        updateView('miss')
-        e.target.remove()
-        songMap.song.tracks[e.target.dataset.trackIndex].next++;
-    });
-
-    hitsEl.addEventListener('animationend', (e) => {
-        e.target.remove()
-    });
-
     setTimeout(() => {
         startGame();
     }, 1000)
 };
 
-
-
 function resolveHit(index) {
+    console.log("RESOLVING HIT")
     let noteIndex = songMap.song.tracks[index].next;
     let note = songMap.song.tracks[index].notes[noteIndex];
     let accuracy = Math.abs(((Date.now() - startTime) / 1000) - (songMap.song.globalDuration + note.delay));
     let hit;
-
+    console.log(noteIndex);
+    console.log(accuracy + " > " + songMap.song.globalDuration / 5);
+    console.log((Date.now() - startTime) / 1000);
+    console.log(songMap.song.globalDuration + note.delay);
+    console.log(songMap.song.globalDuration)
+    console.log(note.delay);
     if(accuracy > songMap.song.globalDuration / 5) {
+        console.log("RETURNING");
         return
     };
 
@@ -474,6 +492,7 @@ function updateCombo(hit) {
         multiplier.combo = 1.1
 
         if(hit === 'miss') {
+            console.log("MISSED!");
             hits.miss++
             streaks.miss++;
             checkGameEnd()
@@ -503,8 +522,9 @@ function updateScore(hit) {
 
 
 function checkGameEnd() {
-    console.log(streaks.miss);
-    if(streaks.miss === songMap.song.maxMiss) {
+    console.log("STREAKS: " + streaks.miss);
+    console.log("MAX MISS: " + songMap.song.maxMiss);
+    if(streaks.miss >= songMap.song.maxMiss) {
         gameOver()
     } else {
         return;
@@ -550,15 +570,17 @@ function updateView(accuracy) {
     hitsEl.appendChild(hitEl)
 }
 
+let songDurationInterval;
 
 function startGame() {
+    startTime = 0;
     startTime = Date.now()
 
     let timer = songMap.song.duration;
     let min;
     let sec;
 
-    let songDurationInterval = setInterval(() => {
+    songDurationInterval = setInterval(() => {
         min = Math.floor(timer / 60);
         sec = timer % 60
         min = min < 10 ? '0' + min : min;
@@ -581,11 +603,14 @@ function startGame() {
     setTimeout(() => {
         audio.play();
         playing = true;
-        wave.fromElement('audio', 'audio-wave', {
-            type: 'dualbars',
-            colors: [songMap.song.waveColor]
-        });
+        
     }, songMap.song.globalDuration * 1000)
+
+    wave = new Wave()
+    wave.fromElement('audio', 'audio-wave', {
+        type: 'dualbars',
+        colors: [songMap.song.waveColor]
+    });
 
     document.querySelectorAll('.note').forEach((note) => {
         note.style.animationPlayState = 'running'
@@ -595,8 +620,13 @@ function startGame() {
 
 function gameOver() {
     fadeInterval = setInterval(fadeAudio, 75);
+    clearInterval(songDurationInterval);
     progressBar.style.animationPlayState = 'paused';
     gameOverSFX.play();
+
+    gameOverModal.style.display = 'flex'
+    gameOverModal.dataset.song = songMap.song.id;
+    gameOverModal.dataset.difficulty = songMap.song.difficulty;
 
     document.querySelectorAll('.note').forEach((note) => {
         note.style.opacity = 1;
@@ -607,6 +637,34 @@ function gameOver() {
             }
         }, 75);
     });
+}
+
+function resetGame() {
+    hits.perfect = 0;
+    hits.good = 0;
+    hits.bad = 0;
+    hits.miss = 0;
+    multiplier.combo = 1.1
+    multiplier.perfect = 1
+    multiplier.good = 0.75
+    multiplier.bad = 0.5
+    multiplier.miss = 0
+    streaks.combo = 0
+    streaks.miss = 0
+    streaks.top = 0
+    score = 0
+    audio.currentTime = 0
+    audio.volume = 1
+    songMap.song.tracks[0].next = 0;
+    songMap.song.tracks[1].next = 0;
+    songMap.song.tracks[2].next = 0;
+    songMap.song.tracks[3].next = 0;
+    scoreEl.innerText = 0;
+    comboEl.innerText = '0x';
+    game.style.display = 'none'
+    gameOverModal.style.display = 'none';
+    progressBar.style.animation = 'none'
+    game.className = ''
 }
 
 function winGame() {

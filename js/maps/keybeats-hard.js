@@ -882,6 +882,7 @@ export let f = {
 }
 export let song = {
     "name": "KeyBeats",
+    "id": "keybeats",
     "src": "assets/audio/music/keybeats.mp3",
     "duration": 146.33795,
     "globalDuration": 3,

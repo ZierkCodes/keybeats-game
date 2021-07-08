@@ -518,6 +518,7 @@ export let f = {
 }
 export let song = {
     "name": "Funk That",
+    "id": "funk-that",
     "src": "assets/audio/music/funk-that.mp3",
     "duration": 110.62855,
     "globalDuration": 4,

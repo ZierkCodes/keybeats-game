@@ -9,47 +9,49 @@
     <title>KeyBeats</title>
 </head>
 <body>
-    
-
-    <!--Overlays-->
-    <!-- <div class="overlay" id="losing" hidden></div>
-    <div class="overlay" id="normal" ></div>
-    <div class="overlay" id="hard" hidden></div> -->
     <!--Song-->
     <audio id="audio"></audio>
     <audio id="game-over-audio" src="assets/audio/sfx/game-over.mp3"></audio>
 
-    <canvas id="audio-wave" height="250" width="900" ></canvas>
 
-    <section id="starting-screen">
+
+    <section id="starting-screen" hidden>
         <img src="./assets/images/keybeats_logo.svg" alt="keybeats">
-        <div>
+        <div id="keybeats">
             <p style="color: #FFF">KEYBEATS</p>
             <button class="select-btn" data-song="keybeats" data-difficulty="easy">Easy</button>
-            <button class="sleect-btn" data-song="keybeats" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="keybeats" data-difficulty="normal">Normal</button>
             <button class="select-btn" data-song="keybeats" data-difficulty="hard">Hard</button>
         </div>
-        <div>
+        <div id="for-my-girl">
             <p style="color: #FFF">FOR MY GIRL</p>
             <button class="select-btn" data-song="for-my-girl" data-difficulty="easy">Easy</button>
-            <button class="sleect-btn" data-song="for-my-girl" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="for-my-girl" data-difficulty="normal">Normal</button>
             <button class="select-btn" data-song="for-my-girl" data-difficulty="hard">Hard</button>
         </div>
-        <div>
+        <div id="funk-that">
             <p style="color: #FFF">FUNK THAT</p>
             <button class="select-btn" data-song="funk-that" data-difficulty="easy">Easy</button>
-            <button class="sleect-btn" data-song="funk-that" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="funk-that" data-difficulty="normal">Normal</button>
             <button class="select-btn" data-song="funk-that" data-difficulty="hard">Hard</button>
         </div>
-        <div>
+        <div id="space-cowboy">
             <p style="color: #FFF">SPACE COWBOY</p>
             <button class="select-btn" data-song="space-cowboy" data-difficulty="easy">Easy</button>
-            <button class="sleect-btn" data-song="space-cowboy" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="space-cowboy" data-difficulty="normal">Normal</button>
             <button class="select-btn" data-song="space-cowboy" data-difficulty="hard">Hard</button>
         </div>
     </section>
 
-    <section id="game" hidden>
+    <section id="game">
+        <div id="game-over">
+            <h1>Game Over</h1>
+            <div>
+                <button class="select-new-song">Select New Song</button>
+                <button class="play-again">Try Again</button>
+            </div>
+        </div>
+        
         <div id="meter">
             <span>
                 <span id="progress"></span>
@@ -82,12 +84,39 @@
                 <div class="number">0x</div>
             </div>
         </div>
-
+        <canvas id="audio-wave" height="250" width="900" ></canvas>
     </section>
 
-    <section id="results" hidden>
-
-    </section>
+    <!-- <section id="results" hidden>
+        <img src="./assets/images/keybeats_logo.svg" alt="keybeats">
+        <header>
+            <h1>High Scores</h1>
+            <div>
+                <button class="select-new-song">Select New Song</button>
+                <button class="play-again">Play Again</button>
+            </div>
+        </header>
+        <section id="highscores">
+            <div class="score-item new">
+                <p class="rank-num">#1</p>
+                <p class="song-name">KeyBeats</p>
+                <p class="difficulty">Normal</p>
+                <p class="score">1,000,000</p>
+            </div>
+            <div class="score-item">
+                <p class="rank-num">#2</p>
+                <p class="song-name">Space Cowboy</p>
+                <p class="difficulty">Normal</p>
+                <p class="score">1,000,000</p>
+            </div>
+            <div class="score-item">
+                <p class="rank-num">#3</p>
+                <p class="song-name">KeyBeats</p>
+                <p class="difficulty">Normal</p>
+                <p class="score">1,000,000</p>
+            </div>
+        </section>
+    </section> -->
     <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>
 </body>
 </html>

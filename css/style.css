@@ -1,19 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+    overflow: hidden;
+}
 /* menu UI */
 
 img {
-    width: 200px;
+    width: 350px;
+    margin: 40px;
+}
+
+#starting-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    height: 35px;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Noto Sans', sans-serif;
+    border: 2px solid #ffffff;
+    border-radius: 3px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: 0px 10px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #00b1ff;
+    border-color: #00b1ff;
+}
+
+.select-btn {
+    width: 90px;
+}
+
+#keybeats .select-btn:hover {
+    background-color: #00b1ff;
+    border-color: #00b1ff;
+}
+
+#for-my-girl .select-btn:hover {
+    background-color: #d350cc;
+    border-color: #d350cc;
+}
+
+#funk-that .select-btn:hover {
+    background-color: #11955e;
+    border-color: #11955e;
+}
+
+#space-cowboy .select-btn:hover {
+    background-color: #95112e;
+    border-color: #95112e;
 }
 
 #starting-screen div {
     display:flex;
     justify-content: space-between;
-    width: 400px
+    align-items: center;
+    width: 700px;
+    height: 50px;
+    padding: 10px 20px;
+    border-bottom: 1px solid #333;
+    position: relative;
+    background-image: linear-gradient(180deg, rgba(0,0,0,1) 45%, rgba(0,0,0,0.5) 100%);
+    transition: background 1s ease;
+    -moz-transition: background 1s ease;
+    -webkit-transition: background 1s ease;
+    -o-transition: background 1s ease;
+    -ms-transition: background 1s ease;
+    z-index: 1;
+}
+
+#starting-screen div#keybeats::before,
+#starting-screen div#for-my-girl::before,
+#starting-screen div#funk-that::before,
+#starting-screen div#space-cowboy::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity 0.5s linear;
+    opacity: 0;
+    z-index: -1;
+}
+
+#starting-screen div#keybeats::before {
+    background-image: linear-gradient(180deg, rgba(0,0,0,1) 45%, rgba(0,177,255,0.5) 100%);
+}
+
+#starting-screen div#for-my-girl::before {
+    background-image: linear-gradient(180deg, rgba(0,0,0,1) 45%, rgba(211,80,204,0.5) 100%);
+}
+
+#starting-screen div#funk-that::before {
+    background-image: linear-gradient(180deg, rgba(0,0,0,1) 45%, rgba(17,149,94,0.5) 100%);
+}
+
+#starting-screen div#space-cowboy::before {
+    background-image: linear-gradient(180deg, rgba(0,0,0,1) 45%, rgba(149,17,46,0.5) 100%);
+}
+
+#starting-screen div#keybeats:hover::before,
+#starting-screen div#for-my-girl:hover::before,
+#starting-screen div#funk-that:hover::before,
+#starting-screen div#space-cowboy:hover::before {
+    opacity: 1;
+}
+
+#starting-screen div p {
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    display: block;
+    width: 350px;
 }
 
 #audio-wave {
     position: absolute;
-    left: calc(100vw / 2 - 450px);
-    top: 100px;
+    left: 150px;
+    top: 120px;
     opacity: 0.5;
 }
 
@@ -38,6 +149,7 @@ img {
 }
 
 #game {
+    display: none;
     width: 1200px;
     height: 768px;
     margin: 0 auto;
@@ -54,19 +166,6 @@ body {
     
     min-width: 1200px;
     min-height: 768px;
-}
-
-/* Overlays */
-#normal {
-    background-color: #04015e;
-}
-
-#hard {
-    background-color: #ff217a;
-}
-
-#losing {
-    background-color: #000000;
 }
 
 /* Game */
@@ -514,4 +613,88 @@ body {
 
 #game.black #meter {
     background-color: #494949;
+}
+
+/* game over modal */
+
+#game-over {
+    position: absolute;
+    background: #000;
+    border: 5px solid #fff;
+    width: 500px;
+    top: 200px;
+    left: 345px;
+    padding-bottom: 30px;
+    z-index: 20;
+    color: #fff;
+    font-family: 'Noto Sans', sans-serif;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* results page */
+
+#results {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+#results img {
+    width: 200px;
+}
+
+#results header,
+#results #highscores {
+    width: 700px;
+    display: flex;
+}
+
+#results header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#results #highscores {
+    flex-direction: column;
+}
+
+#results #highscores .score-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 2px solid ;
+}
+
+#results #highscores .score-item p {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: left;
+}
+
+#results #highscores .score-item.new {
+    color: #00b1ff;
+}
+
+#results #highscores .score-item .rank-num {
+    width: 75px;
+}
+
+#results #highscores .score-item .song-name {
+    width: 300px;
+}
+
+#results #highscores .score-item .difficulty {
+    width: 75px
+}
+
+#results #highscores .score-item .score {
+    width: 150px;
+    text-align: right;
 }
