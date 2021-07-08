@@ -1,110 +1,136 @@
-#output {
+/* menu UI */
+
+img {
+    width: 200px;
+}
+
+#starting-screen div {
+    display:flex;
+    justify-content: space-between;
+    width: 400px
+}
+
+#audio-wave {
     position: absolute;
     left: calc(100vw / 2 - 450px);
-    top: 60px;
+    top: 100px;
+    opacity: 0.5;
+}
+
+.hit {
+    position: absolute;
+    z-index: 1000;
+    color: lightcyan;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 5px rgba(142,204,206,0.87);
+    font-size: 38px;
+    text-align: center;
+    width: 200px;
+    top: 400px;
+    left: 500px;
+}
+
+@keyframes fadeHit {
+    0% { top: 400px; opacity: 1; }
+    100% { top: 390px; opacity: 0; }
+}
+
+#game {
+    width: 1200px;
+    height: 768px;
+    margin: 0 auto;
+    position: relative;
 }
 
 body {
-    background: #000000;
+    background: #000;
     position: relative;
     margin: 0;
     padding: 0;
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw;
+    height: 100vh; */
+    
+    min-width: 1200px;
+    min-height: 768px;
 }
 
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.3;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
+/* Overlays */
+#normal {
+    background-color: #04015e;
+}
+
+#hard {
+    background-color: #ff217a;
+}
+
+#losing {
+    background-color: #000000;
 }
 
 /* Game */
+
 #track {
-    height: 370px;
-    width: 120px;
-    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #115195 100%);
-    box-shadow: 0px 0px 6px 3px rgba(160,216,255,0.6);
-    -webkit-transform: perspective(200px) rotateX(40deg);
-    transform: perspective(200px) rotateX(40deg);
+    height: 520px;
+    width: 200px;
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(17, 81, 149) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(160,216,255,0.6);
+    -webkit-transform: perspective(320px) rotateX(40deg);
+    transform: perspective(320px) rotateX(40deg);
     margin: 0 auto;
     position: relative;
-    /* top: -130px; */
-    /* top: -100px; */
-    top: -100px;
+    top: -130px;
     z-index: 10;
 }
 
 #hit-box {
     position: absolute;
-    width: 120px;
-    height: 4px;
+    width: 200px;
+    height: 7px;
     background-color: #e0ffff;
-    top: 366px;
+    top: 513px;
     box-shadow: 0px 0px 6px 2px rgba(160,216,255,0.6);
 }
 
-#a-track,
-#s-track,
-#d-track,
-#f-track {
+.track {
     position: absolute;
-    height: 370px;
-    background-color: #e0ffff;
+    height: 520px;
+    width: 4px;
+    top: 0;
+    background-color: lightcyan;
     box-shadow: 0px 0px 6px 1px rgba(160,216,255,0.6);
 }
 
-#a-track {
-    width: 1.5px;
-    left: calc(20% - 1px);
-}
-
-#s-track {
-    width: 2px;
-    left: calc(40% - 1px);
-}
-
-#d-track {
-    width: 1.5px;
-    left: calc(60% - 1px);
-}
-
-#f-track {
-    width: 2px;
-    left: calc(80% - 1px);
-}
+#a-track { left: calc(20% - 2px); }
+#s-track { left: calc(40% - 2px); }
+#d-track { left: calc(60% - 2px); }
+#f-track { left: calc(80% - 2px); }
 
 .note {
     position: absolute;
-    width: 15px;
-    height: 5px;
+    width: 30px;
+    height: 7px;
     top: -70px;
-    left: -7px;
-    background-color: #e0ffff;
+    left: -13px;
+    background-color: lightcyan;
     box-shadow: 0px 0px 6px 1px rgba(160,216,255,0.6);
 }
 
 @keyframes moveNote {
     0% { top: 0px }
-    100% { top: 366px }
+    100% { top: 513px }
 }
 
 /* score, combo, controls, progress bar */
 
 #meter { 
-    height: 6px;
-    width: 93%;
+    height: 4px;
+    width: 900px;
     position: absolute;
     background: #145991;
     top: 15px;
-    left: 36px;
+    left: 150px;
     z-index: 3500;
     opacity: 90%;
 }
@@ -115,14 +141,13 @@ body::after {
 }
 
 #progress {
-    background-color: #d2effc;
-    animation: progressBar 148.4s linear;
-    animation-fill-mode: both; 
-    box-shadow: 0px 0px 3px 1px rgba(160,216,255,0.6);
+    background-color: #e0ffff;
+    width: 0;
+    box-shadow: 0px 0px 6px 2px rgba(160,216,255,0.6);
 }
 
 @keyframes progressBar {
-  0% { width: 0; }
+  0% { width: 0%; }
   100% { width: 100%; }
 }
 
@@ -131,163 +156,362 @@ body::after {
 #combo {
     text-shadow: 0px 0px 5px rgba(142,204,206,0.87);
     z-index: 2;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: sans-serif;
 }
 
 .letters {
-    color: #e0ffff;
-    /* background-color: ; */
-    height: 40px;
-    width: 40px;
+    color: #d2ecff;
+    height: 65px;
+    width: 65px;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: 600;
     border-radius: 2px;
     box-shadow: 0px 0px 3px 1px rgba(160,216,255,0.6);
-    padding: 4px 3px 0 3px;
-    border: solid 2px #e0ffff;  
+    line-height: 65px;
+    padding: 0;
+    border: solid 3px lightcyan;  
+}
+
+.letters.pressed {
+    background: #d2ecff;
+    color: #000;
+    text-shadow: 0px 0px 5px rgba(17, 81, 149,0.6);
+}
+
+#score,
+#combo {
+    color: #e0ffff;
+    font-weight: 600;
+    width: 300px;
+    position: absolute;
+    bottom: 130px;
+}
+
+#score {
+    text-align: right;
+}
+
+#combo {
+    right: 0;
 }
 
 
 .text {
-    font-size: 8px;
-    text-align: right;
+    font-size: 16px;
 }
 
 .number {
-    font-size: 25px;
-    text-align: right;
-}
-
-#score {
-    color: #eefeff;
-    width: 100px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    left: 0px;
-    top: 3px;
+    font-size: 48px;
 }
 
 #controls {
-    width: 260px;
+    width: 350px;
     height: 25px;
     margin: 0 auto;
     position: relative;
-    top: 60px;
-    left: -1px;
+    top: 50px;
     display: flex;
     justify-content: space-evenly;
 }
 
-#combo {
-    color: #eefeff;
-    width: 100px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    left: 0px;
-    top: -67px;
+
+/* =============================================================================
+| TRANSITION ELEMENTS
+! This does not work...
+============================================================================= */
+/* #game {
+    -webkit-transition: all s linear;
+    -moz-transition: all 1s linear;
+    transition: all 1s linear;
+}
+#game #track {
+    -webkit-transition: background 1s linear, box-shadow 1s linear;
+    -moz-transition: background 1s linear, box-shadow 1s linear;
+    transition: background 1s linear, box-shadow 1s linear;
 }
 
-/* Color changers for song intensity and your state of the game from normal to hard, and if you miss too many notes then losing*/
-
-/* score div */
-
-#score.normal,
-#combo.normal,
-#controls.normal {
-    text-shadow: 0px 0px 5px rgba(142,204,206,0.87);
-    color: #e0ffff;
+#game #track .track,
+#game #track .track .note,
+#game #track #hit-box,
+#game #progress {
+    -webkit-transition: background-color 1s linear, box-shadow 1s linear;
+    -moz-transition: background-color 1s linear, box-shadow 1s linear;
+    transition: background-color 1s linear, box-shadow 1s linear;
 }
 
-#score.hard,
-#combo.hard,
-#controls.hard {
-    text-shadow: 0px 0px 5px rgba(255, 223, 249, 0.8);
-    color: #feecfc;
+#game #track .track,
+#game #track #hit-box,
+#game #track .track .note,
+#game #progress {
+    -webkit-transition: box-shadow 1s linear;
+    -moz-transition: box-shadow 1s linear;
+    transition: box-shadow 1s linear;
 }
 
-#score.losing,
-#combo.losing,
-.letters.losing {
-    text-shadow: #ffffff;
-    color: #ffffff;
+#game #controls .letters {
+    -webkit-transition: color 1s linear, border 1s linear, text-shadow 1s linear;
+    -moz-transition: color 1s linear, border 1s linear, text-shadow 1s linear;
+    transition: color 1s linear, border 1s linear, text-shadow 1s linear;
 }
 
-.letters.normal {
-    border: solid 1.5px #e0ffff;  
-    color: #e0ffff;
+#game #controls .letters.pressed {
+    -webkit-transition: color 1s linear, background 1s linear, text-shadow 1s linear;
+    -moz-transition: color 1s linear, background 1s linear, text-shadow 1s linear;
+    transition: color 1s linear, text-shadow 1s linear;
 }
 
-.letters.hard {
-    box-shadow: 0px 0px 3px 1px rgba(255, 223, 249, 0.6);
-    border: solid 1.5px #fed8fd;  
+#game #score,
+#game #combo,
+#game .hit {
+    -webkit-transition: color 1s linear, text-shadow 1s linear;
+    -moz-transition: color 1s linear, text-shadow 1s linear;
+    transition: color 1s linear, text-shadow 1s linear;
 }
 
-.letters.losing {
-    border: solid 1.5px #ffffff;  
-    color: #ffffff;
+#game #meter {
+    -webkit-transition: background-color 1s linear;
+    -moz-transition: background-color 1s linear;
+    transition: background-color 1s linear;
+} */
+
+/* =============================================================================
+| RED COLOR STYLES
+============================================================================= */
+#game.red #track {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(149, 17, 46) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(255, 160, 184, 0.6);
 }
 
-#hit-box.normal,
-#progress.normal,
-#a-track.normal,
-#s-track.normal,
-#d-track.normal,
-#f-track.normal {
-    background-color: #e0ffff;
-    box-shadow: 0px 0px 6px 2px rgba(160,216,255,0.6);
+#game.red #track .track,
+#game.red #track .track .note,
+#game.red #track #hit-box,
+#game.red #progress {
+    background-color: #fff1f7;
 }
 
-#hit-box.hard,
-#progress.hard,
-#a-track.hard,
-#s-track.hard,
-#d-track.hard,
-#f-track.hard {
-    background-color: #fef5fd;
-    box-shadow: 0px 0px 6px 2px rgba(255, 223, 249, 0.6);
+#game.red #track .track {
+    box-shadow: 0px -2px 3px 3px rgba(255, 160, 184, 0.6);
 }
 
-#hit-box.losing,
-#progress.losing,
-#a-track.losing,
-#s-track.losing,
-#d-track.losing,
-#f-track.losing {
-    background-color: #ffffff;
-    box-shadow: 0px 0px 6px 2px rgba(255, 255, 255, 0.6);
+#game.red #track #hit-box,
+#game.red #track .track .note,
+#game.red #progress {
+    box-shadow: 0px 0px 6px 2px rgba(255, 160, 184, 0.6);
 }
 
-#track.normal {
-    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #115195 100%);
-    box-shadow: 0px 0px 6px 3px rgba(160,216,255,0.6);
+#game.red #controls .letters {
+    color: #fff1f7;
+    border: solid 3px #fff1f7;
+    text-shadow: 0px 0px 5px rgba(255, 160, 184, 0.8);
 }
 
-#track.hard {
-    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #9e6396 100%);
-    box-shadow: 0px 0px 6px 3px rgba(255, 223, 249, 0.6);
+#game.red #controls .letters.pressed {
+    background: #fff1f7;
+    color: #000;
+    text-shadow: 0px 0px 5px #95112e;
 }
 
-#track.losing {
-    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, #4c4c4c 100%);
-    box-shadow: 0px 0px 6px 3px rgba(233, 233, 233, 0.6);
+#game.red #score,
+#game.red #combo,
+#game.red .hit {
+    color: #fff1f7;
+    text-shadow: 0px 0px 5px rgba(255, 160, 184, 0.8);
 }
 
-/* song progress meter */
-
-#meter.normal {
-    background-color: #145991;
-    box-shadow: ;
+#game.red #meter {
+    background-color: #95112e;
 }
 
-#meter.hard {
-    background-color: #603d5c;
-    box-shadow: ;
+/* =============================================================================
+| PINK COLOR STYLES
+============================================================================= */
+#game.pink #track {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(211, 80, 204) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(255, 160, 250, 0.6);
 }
 
-#meter.losing {
-    background-color: #5f5f5f;
-    box-shadow: ;
+#game.pink #track .track,
+#game.pink #track .track .note,
+#game.pink #track #hit-box,
+#game.pink #progress {
+    background-color: #fdf1ff;
+}
+
+#game.pink #track .track {
+    box-shadow: 0px -2px 3px 3px rgba(255, 160, 250, 0.6);
+}
+
+#game.pink #track #hit-box,
+#game.pink #track .track .note,
+#game.pink #progress {
+    box-shadow: 0px 0px 6px 2px rgba(255, 160, 250, 0.6);
+}
+
+#game.pink #controls .letters {
+    color: #fdf1ff;
+    border: solid 3px #fdf1ff;
+    text-shadow: 0px 0px 5px rgba(255, 160, 250, 0.8);
+}
+
+#game.pink #controls .letters.pressed {
+    background: #fdf1ff;
+    color: #000;
+    text-shadow: 0px 0px 5px #d350cc;
+}
+
+#game.pink #score,
+#game.pink #combo,
+#game.pink .hit {
+    color: #fdf1ff;
+    text-shadow: 0px 0px 5px rgba(255, 160, 250, 0.8);
+}
+
+#game.pink #meter {
+    background-color: #d350cc;
+}
+
+/* =============================================================================
+| GREEN COLOR STYLES
+============================================================================= */
+#game.green #track {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(17, 149, 94) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(160, 255, 219, 0.6);
+}
+
+#game.green #track .track,
+#game.green #track .track .note,
+#game.green #track #hit-box,
+#game.green #progress {
+    background-color: #f1fffa;
+}
+
+#game.green #track .track {
+    box-shadow: 0px -2px 3px 3px rgba(160, 255, 219, 0.6);
+}
+
+#game.green #track #hit-box,
+#game.green #track .track .note,
+#game.green #progress {
+    box-shadow: 0px 0px 6px 2px rgba(160, 255, 219, 0.6);
+}
+
+#game.green #controls .letters {
+    color: #f1fffa;
+    border: solid 3px #f1fffa;
+    text-shadow: 0px 0px 5px rgba(160, 255, 219, 0.8);
+}
+
+#game.green #controls .letters.pressed {
+    background: #f1fffa;
+    color: #000;
+    text-shadow: 0px 0px 5px #11955e;
+}
+
+#game.green #score,
+#game.green #combo,
+#game.green .hit {
+    color: #f1fffa;
+    text-shadow: 0px 0px 5px rgba(160, 255, 219, 0.8);
+}
+
+#game.green #meter {
+    background-color: #11955e;
+}
+
+/* #00B1FF */
+/* =============================================================================
+| BLUE COLOR STYLES
+============================================================================= */
+#game.blue #track {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(0, 177, 255) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(160, 225, 255, 0.6);
+}
+
+#game.blue #track .track,
+#game.blue #track .track .note,
+#game.blue #track #hit-box,
+#game.blue #progress {
+    background-color: #f1faff;
+}
+
+#game.blue #track .track {
+    box-shadow: 0px -2px 3px 3px rgba(160, 225, 255, 0.6);
+}
+
+#game.blue #track #hit-box,
+#game.blue #track .track .note,
+#game.blue #progress {
+    box-shadow: 0px 0px 6px 2px rgba(160, 225, 255, 0.6);
+}
+
+#game.blue #controls .letters {
+    color: #f1faff;
+    border: solid 3px #f1faff;
+    text-shadow: 0px 0px 5px rgba(160, 225, 255, 0.8);
+}
+
+#game.blue #controls .letters.pressed {
+    background: #f1faff;
+    color: #000;
+    text-shadow: 0px 0px 5px #00b1ff;
+}
+
+#game.blue #score,
+#game.blue #combo,
+#game.blue .hit {
+    color: #f1faff;
+    text-shadow: 0px 0px 5px rgba(160, 225, 255, 0.8);
+}
+
+#game.blue #meter {
+    background-color: #00b1ff;
+}
+
+/* =============================================================================
+| BLACK COLOR STYLES
+============================================================================= */
+#game.black #track {
+    background: linear-gradient(180deg, rgba(0,0,0,1) 30%, rgb(92, 92, 92) 100%);
+    box-shadow: 0px -2px 3px 3px rgba(206, 206, 206, 0.6);
+}
+
+#game.black #track .track,
+#game.black #track .track .note,
+#game.black #track #hit-box,
+#game.black #progress {
+    background-color: #f3f3f3;
+}
+
+#game.black #track .track {
+    box-shadow: 0px -2px 3px 3px rgba(206, 206, 206, 0.6);
+}
+
+#game.black #track #hit-box,
+#game.black #track .track .note,
+#game.black #progress {
+    box-shadow: 0px 0px 6px 2px rgba(206, 206, 206, 0.6);
+}
+
+#game.black #controls .letters {
+    color: #f3f3f3;
+    border: solid 3px #f3f3f3;
+    text-shadow: 0px 0px 5px rgba(206, 206, 206, 0.8);
+}
+
+#game.black #controls .letters.pressed {
+    background: #f3f3f3;
+    color: #000;
+    text-shadow: 0px 0px 5px #494949;
+}
+
+#game.black #score,
+#game.black #combo,
+#game.black .hit {
+    color: #f3f3f3;
+    text-shadow: 0px 0px 5px rgba(206, 206, 206, 0.8);
+}
+
+#game.black #meter {
+    background-color: #494949;
 }

@@ -6,64 +6,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="js/app.js" type="module"></script>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     <title>KeyBeats</title>
 </head>
 <body>
     
 
-
+    <!--Overlays-->
+    <!-- <div class="overlay" id="losing" hidden></div>
+    <div class="overlay" id="normal" ></div>
+    <div class="overlay" id="hard" hidden></div> -->
     <!--Song-->
-    <audio id="keybeats-audio" src="assets/audio/KeyBeats.mp3"></audio>
-    <canvas id="output" height="300" width="900" ></canvas>
+    <audio id="audio"></audio>
+    <audio id="game-over-audio" src="assets/audio/sfx/game-over.mp3"></audio>
 
-    <section id="starting-screen" hidden>
+    <canvas id="audio-wave" height="250" width="900" ></canvas>
 
-    </section>
-
-    <div id="meter" class="normal">
-        <span style="width:100%;"><span id="progress"></span></span>
-    </div>
-    <section id="game">
-        <div id="track" class="normal">
-            <div id="a-track" class="normal">
-
-
-            </div>
-            <div id="s-track" class="normal">
-
-
-            </div>
-            <div id="d-track" class="normal">
-
-
-            </div>
-            <div id="f-track" class="normal">
-
-
-            </div>
-            <div id="hit-box" class="normal"></div>
+    <section id="starting-screen">
+        <img src="./assets/images/keybeats_logo.svg" alt="keybeats">
+        <div>
+            <p style="color: #FFF">KEYBEATS</p>
+            <button class="select-btn" data-song="keybeats" data-difficulty="easy">Easy</button>
+            <button class="sleect-btn" data-song="keybeats" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="keybeats" data-difficulty="hard">Hard</button>
         </div>
         <div>
-            <div id="score" class="normal"><strong>
+            <p style="color: #FFF">FOR MY GIRL</p>
+            <button class="select-btn" data-song="for-my-girl" data-difficulty="easy">Easy</button>
+            <button class="sleect-btn" data-song="for-my-girl" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="for-my-girl" data-difficulty="hard">Hard</button>
+        </div>
+        <div>
+            <p style="color: #FFF">FUNK THAT</p>
+            <button class="select-btn" data-song="funk-that" data-difficulty="easy">Easy</button>
+            <button class="sleect-btn" data-song="funk-that" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="funk-that" data-difficulty="hard">Hard</button>
+        </div>
+        <div>
+            <p style="color: #FFF">SPACE COWBOY</p>
+            <button class="select-btn" data-song="space-cowboy" data-difficulty="easy">Easy</button>
+            <button class="sleect-btn" data-song="space-cowboy" data-difficulty="normal">Normal</button>
+            <button class="select-btn" data-song="space-cowboy" data-difficulty="hard">Hard</button>
+        </div>
+    </section>
+
+    <section id="game" hidden>
+        <div id="meter">
+            <span>
+                <span id="progress"></span>
+            </span>
+        </div>
+
+        <div id="track">
+            <div id="a-track" class="track"></div>
+            <div id="s-track" class="track"></div>
+            <div id="d-track" class="track"></div>
+            <div id="f-track" class="track"></div>
+            <div id="hit-box"></div>
+        </div>
+
+        <div id="hits"></div>
+
+        <div>
+            <div id="score">
                 <div class="text">SCORE</div>
                 <div class="number">0</div>
-            </div></strong>
-            <div id="controls" class="normal">
+            </div>
+            <div id="controls">
                 <div class="letters">A</div>
                 <div class="letters">S</div>
                 <div class="letters">D</div>
                 <div class="letters">F</div>
-            </div><strong>
-            <div id="combo" class="normal">
+            </div>
+            <div id="combo">
                 <div class="text">COMBO</div>
                 <div class="number">0x</div>
-            </div></strong>
+            </div>
         </div>
 
     </section>
 
-    <section id="score-board" hidden>
+    <section id="results" hidden>
 
     </section>
     <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>

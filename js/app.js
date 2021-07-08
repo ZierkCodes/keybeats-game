@@ -1,48 +1,146 @@
 /**
- * KeyBeats – app.js
- * 
- * @credits
- * Wave.js     https://foobar404.github.io/Wave.js
- * Author      Foobar404
- * 
- *              
+ * ==============================================
+ * KEYBEATS
+ * ==============================================
+ * Author: Gage Zierk
+ * Created: 07/02/2021
+ * http://www.gagezierk.com    
+ * ?              ______________
+ * ?        ,===:'.,            `-._
+ * ?             `:.`---.__         `-._
+ * ?               `:.     `--.         `.
+ * ?                 \.        `.         `.
+ * ?         (,,(,    \.         `.   ____,-`.,
+ * ?      (,'     `/   \.   ,--.___`.'
+ * ?  ,  ,'  ,--.  `,   \.;'         `
+ * ?   `{D, {    \  :    \;
+ * ?     V,,'    /  /    //
+ * ?     j;;    /  ,' ,-//.    ,---.      ,
+ * ?     \;'   /  ,' /  _  \  /  _  \   ,'/
+ * ?           \   `'  / \  `'  / \  `.' /
+ * ?            `.___,'   `.__,'   `.__,' 
+* ==============================================
  */
 
-import {a, s, d, f, globalDuration, keybeats} from './keybeats_test.js';
+// * =============================================================================
+// * README: THINKING ABOUT GAME LOGIC
+// * =============================================================================
+/**
+ * Before diving into the specifics of a rhythm game, let's first think about the
+ * basics of any game.
+ * 
+ * At the very least, there are three parts to the logic of any game.
+ * The first is the intialization of the game. This is based on any event that can
+ * trigger the game to start, like a button click. This part of our logic will
+ * set up the game, all its variables, event listeners, and anything else we need
+ * to make sure the game is ready to play.
+ * 
+ * The second part is the bulk of our specific game logic. This is unique to any
+ * game that you're playing, but ultimately, it lays out everything that needs to
+ * happen for the player while they're playing the game.
+ * 
+ * Finally, we need a way to check to see if the game has ended. This can be 
+ * based on a multitude of conditions, such as winning, losing, etc. We will also
+ * need a way to reset the game after it's ended so that it can be played again
+ * without having to refresh the page.
+ */
 
-let audio = document.querySelector('#keybeats-audio');
-let canvas = document.querySelector('#output');
+// * =============================================================================
+// * README: GAME LOGIC FOR THE RHYTHM GAME
+// * =============================================================================
+/**
+ * There are a lot of things we'll need to do to set this up, but here is some of
+ * the things you'll need to accomplish to get this working:
+ * 
+ * 1. We need a way to be able to select a song. This will include importing the
+ * song maps and setting all our variables based on the selected song.
+ * 
+ * 2. You'll need a function that will handle the bulk of the game setup. This 
+ * includes things like setting global variables, setting up all the individual
+ * notes of the rhythm game, setting up the event listeners for when the control
+ * keys [a, s, d, f] are pressed, and removing any necessary html elements that
+ * were dynamically created in JavaScript. (Particularly when the animations end.)
+ * 
+ * 3. We'll need a way to resolve and grade hits. So, when a player presses a key,
+ * we need to check the accuracy, and update a bunch of stuff depending on that
+ * result.
+ * 
+ * 4. We'll also need a way to update the different variables. For
+ * the rhythm game, this includes things like the different hits, combos, the
+ * multiplier for the score, and all of that other stuff. It also includes things
+ * like updating the tracks (removing notes), updating the UI, etc. So essentially,
+ * every time a player hits a key (or misses), we need to update a bunch of
+ * different moving parts.
+ * 
+ * 5. We'll need a way to start the game. This will begin our timers, play the song,
+ * and listen for the song to end (in which case it will need a way to end the game
+ * with a positive result, like showing the leaderboard.) It will also need to 
+ * make sure the leaderboard has our new, final score.
+ * 
+ * 6. As mentioned above, we'll need a way to end the game. This includes removing
+ * any leftover notes (in case of failure), stopping audio, etc.
+ * 
+ * This is a gross oversimplification, but we'll break it down further step by 
+ * step in the sections below.
+ */
 
+
+// ? =============================================================================
+// ? SECTION 1: DEFINE VARIABLES
+// ? =============================================================================
+// * =============================================================================
+// * README: VARIABLE EXPLANATIONS
+// * =============================================================================
+/**
+ * @const game - We will need this to update the color scheme of the UI
+ * @const track - We will need this to listen for animationend events (for the notes)
+ * @const tracks - We will need this to iterate for all tracks, notes, etc.
+ * @const audio - We need to access this to dynamically set the source and control audio events
+ * @const controls - We will need these to update the style when the controls / keys are being pressed
+ * @const progressBar - We will need to set the animation of this dynamically to match the duration of the song
+ * @const gameOverSFX - We will need to play this if (when?) the user fails
+ * @const audioWave - We will need to access the audioWave HTML to initialize the audio wave
+ * @const scoreEl - We will need this HTML element to display and update the score
+ * @const comboEl - We will need this HTML element to display and update the combo streak
+ * @const hitsEl - We will need this to display the grade of the hit: perfect, good, bad, miss
+ * @var songMap - Very important. This has all the data to make everything work. Take a look at it.
+ * @var startTime - This will set the time the song has officially started. We use it to calculate accuracy.
+ * @var fadeInterval - This just handles the audio fade out interval if a user fails. We need it as a global to remove it later.
+ * @var wave - This is our Wave object! Makes shiny effects.
+ * @var scoreBoard - Self explanatory, but will hold all the win results from a single session. (Not the fails.)
+ * @var playing - A quick variable to reference to check whether or not our song is actively playing.
+ * @var score - Just our score counter. ¯\_(ツ)_/¯
+ * @var keyPressed - This object tells us whether or not a key is actively being pressed.
+ * @var hits - This will keep track of each individual hit and count.
+ * @var multiplier - This tells us how much to multiply the score by. The only reason this isn't a const is because we update the combo multiplier based on successive hits.
+ * @var streaks - Allows us to keep track of our streaks. Miss streaks tell us if the player is going to fail, and combo streaks keep track of our multiplier.
+ */
+
+
+const game = document.querySelector('#game') 
+const track = document.querySelector('#track')
+const tracks = document.querySelectorAll('.track')
+const audio = document.querySelector('#audio')
+const controls = document.querySelectorAll('.letters')
+const progressBar = document.querySelector('#progress')
+const gameOverSFX = document.querySelector('#game-over-audio')
+const audioWave = document.querySelector('#audio-wave')
+const scoreEl = document.querySelector('#score .number')
+const comboEl = document.querySelector('#combo .number')
+const hitsEl = document.querySelector('#hits')
+
+
+let songMap;
+let startTime;
+let fadeInterval;
 let wave = new Wave();
-// audio wave from https://foobar404.github.io/Wave.js/?wave=orbs#/
-// document.addEventListener('click', (e) => {
-//     console.log(e.currentTarget);
-    
-// });
+let scoreBoard = [];
+let playing = false;
+let score = 0;
 
 
 
-
-
-
-
-
-
-
-
-// Setup Variables
-let songPosition;
-let songDuration;
-
-// Adding Event Listeners
-
-audio.addEventListener("timeupdate", function() {
-    songPosition = parseInt(audio.currentTime * 1000);
-    songDuration = audio.duration;
-}, false);
-
-// Other Variables 
-let keyPress = {
+let keyPressed = {
     a: false,
     s: false,
     d: false,
@@ -54,299 +152,488 @@ let hits = {
     good: 0,
     bad: 0,
     miss: 0
-};
+}
 
 let multiplier = {
+    combo: 1.1,
     perfect: 1,
     good: 0.75,
     bad: 0.5,
     miss: 0
-};
-
-let songIsPlaying = false;
-let score = 0;
-let startTime = null;
-let trackContainer = document.querySelector('#track');
-let tracks = [
-    {
-        track: 'a',
-        element: document.querySelector('#a-track')
-    },
-    {
-        track: 's',
-        element: document.querySelector('#s-track')
-    },
-    {
-        track: 'd',
-        element: document.querySelector('#d-track')
-    },
-    {
-        track: 'f',
-        element: document.querySelector('#f-track')
-    }
-];
-
-// let keyButtons = document.querySelectorAll('.keyButtons'); // A, S, D, F
-
-initializeNotes();
-setupControls();
-setupMiss();
-
-function initializeNotes() {
-    let noteElement;
-
-    keybeats.controls.forEach(function(key, index) {
-        key.notes.forEach(function(note) {
-            noteElement = document.createElement('div');
-            noteElement.classList.add('note');
-            noteElement.classList.add('note--' + index);
-            noteElement.style.animationName = 'moveNote';
-            noteElement.style.animationTimingFunction = 'linear';
-            noteElement.style.animationDuration = globalDuration + 'ms';
-            noteElement.style.animationDelay = note.delay + 'ms';
-            noteElement.style.animationPlayState = 'paused';
-            tracks[index].element.appendChild(noteElement);
-        });
-    });
 }
 
-function start() {
-    startTime = Date.now();
-    startTimer(keybeats.duration);
-    console.log("AUDIO DURATION: " + audio.duration*1000);
-    console.log("KEYBEATS DURATION:" + keybeats.duration);
-
-    setTimeout(() => {
-        wave.fromElement("keybeats-audio", "output", {
-            type: "dualbars",
-            colors: ["#a0d8ff"]
-        });
-        audio.play();
-        songIsPlaying = true;
-    }, 2100);
-    
-    document.querySelectorAll('.note').forEach(function(note) {
-        note.style.animationPlayState = 'running';        
-    });
+let streaks = {
+    combo: 0,
+    miss: 0,
+    top: 0 
 }
 
-function startTimer(duration) {
-    let timer = duration;
-    let miliseconds;
 
-    let songDurationInterval = setInterval(function() {
-        if(--timer < 0) {
-            clearInterval(songDurationInterval);
-            showResults();
+/**
+ * * Note: This will be updated to be called when a button is clicked that will pass the correct data so we don't have to manually set it.
+ * 1.  Add a 'keydown' event listener to document and pass @param e as a parameter in the callback function.
+ * 2.  Create an @if conditional that checks:
+ *          -> If @param e.key is equal to 'Enter'
+ *                  -> call @function selectSong and pass your choice of song and difficulty as a string:
+ *                              SONGS:              DIFFICULTIES:
+ *                              keybeats            easy
+ *                              for-my-girl         normal
+ *                              funk-that           hard
+ *                              space-cowboy                        
+ */
+
+/**
+selectBtn.addEventListener('click', (e) => {
+    selectSong(e.target.dataset.song, e.target.dataset.difficulty);
+});
+ */
+
+
+// ? =============================================================================
+// ? SECTION 3: DEFINE FUNCTIONS
+// ? =============================================================================
+// * =============================================================================
+// * README: FUNCTION EXPLANATIONS
+// * =============================================================================
+/**
+ * @function selectSong()
+ *      -> Requires @param song
+ *      -> Requires @param difficulty
+ *      -> Description: This will pull the correct Song Map based on the difficulty.
+ * @function importSongMap()
+ *      -> Requires @param filepath
+ *      -> Description: This function uses a promise to import our map module. It then passes the map module into
+ *         the intializeGame function so that we can set it as a global variable.
+ * @function intializeGame()
+ *      -> Requires @param mapModule
+ *      -> Description: This function sets up our game:
+ *              1. Sets the global songMap variable using the mapModule
+ *              2. Sets the audio source.
+ *              3. Sets the game's color scheme.
+ *              4. Creates all the notes based on the songMap
+ *              5. Adds the event listeners for all the controls (as well as corresponding logic)
+ *              6. Sets up the event listener for animationend on the main track (as well as corresponding logic)
+ *              7. Sets up the event listener for the hits element that displays the grade of the hit
+ *              8. Calls the startGame() function to start the game.
+ * @function resolveHit()
+ *      -> Requires @param index
+ *      -> Description: This function handles all the logic to determine the success of a hit when a control key is pressed:
+ *              1. Grabs the noteIndex from the track in the songMap.
+ *              2. Grabs the current note object from the songMap track [a, s, d, f] using the noteIndex. This is how we get our delay for the current note.
+ *              3. Calculates the accuracy. This one is a bit long, so we'll break it down:
+ *                      - Get the current time stamp, minus the time the song started, divided by 1000 (because it starts in milliseconds)
+ *                      - That gives us the exact time the key was pressed.
+ *                      - This value is very close to our note's recorded delay (plus the global duration time allotted for the animation)
+ *                      - We subtract that from the time our key was pressed to get our accuracy.
+ *              4. We check to see if the note has gone down 3/4 of the track before we allow it to be pressed. (If not, nothing happens.)
+ *              5. Then, we grade the accuracy: perfect, good, bad, miss
+ *              6. Update the hits based on whatever the grade was.
+ *              7. Update the combo.
+ *              8. Update the score.
+ *              9. Update the view (UI).
+ *              10.Remove the note from the track.
+ *              11.Increment the index in the songMap.
+ * @function grade()
+ *      -> Requires @param accuracy
+ *      -> Description: A relatively simple function that returns the grade of the hit based on the accuracy.
+ * @function updateCombo()
+ *      -> Requires @param hit
+ *      -> Description: Based on the graded hit, it updates our global variables:
+ *              1. streaks.combo
+ *              2. multiplier.combo
+ *              3. streaks.top
+ *              4. streaks.miss
+ *         * Note: It will also reset the combo / multiplier on a bad hit or a missed hit.
+ * @function updateScore()
+ *      -> Requires @param hit
+ *      -> Description: A simple function that updates our score using the multipliers.
+ * @function checkGameEnd()
+ *      -> Description: This is called each time a player misses. It checks to see if the miss streak is equal to the maxMiss value in the songMap
+ *         If so, it calls the gameOver function. Otherwise, it returns the function, and allows the game to keep playing.
+ * @function updateView()
+ *      -> Requires @param accuracy
+ *      -> Description: This function handles the bulk of our logic when it comes to updating our view.
+ *              1. It updates the score HTML
+ *              2. It updates the combo HTML
+ *              3. It updates the game's color scheme to black when a user is in the middle of a miss streak (based on difficulty)
+ *              4. It updates the game's color scheme when they break out of the miss streak.
+ *              5. It creates the 'hit' elements that display the graded hit: perfect, good, bad, miss
+ * @function startGame()
+ *      -> Description: This function handles everything needed to actually start the game:
+ *              1. Sets the start time.
+ *              2. Creates a timer.
+ *              3. Creates a songDurationInterval variable that will track the remaining time of the song.
+ *                 When the song is over, it clears the interval and calls the winGame() function.
+ *              4. It dynamically sets the progressBar's styling to animate according to the duration of the song.
+ *              5. It sets a timeout according to the globalDuration specified in the songMap * 1000 (to get MS, which is what timeouts run on)
+ *              6. Inside the interval, we:
+ *                      - Play the audio
+ *                      - Set the playing global variable to true
+ *                      - Initialize the audio wave
+ *              7. Then, it loops through all the notes and sets them to running at the same time. (They have a delay that makes them come down at the right time.)
+ * @function gameOver()
+ *      -> Description: This function handles the gameOver state when a player fails.
+ *              1. Sets the fade interval so the audio will fade out.
+ *              2. Pauses the progressBar.
+ *              3. Plays the game over sound fx (gameOverSFX)
+ *              4. Fades out all the notes and removes them from the track.
+ *         * Note: We will need to add more to this function later.
+ * @function winGame()
+ *      -> Description: This function handles the gameOver state when a player wins.
+ *         Currently, is is just pushing data to the scoreBoard.
+ *         * We will need to loop through the scoreboard and make sure there are no "new" objects before pushing the new one.
+ *         * We will be adding more to this function later, as well.
+ * @function fadeAudio()
+ *      -> This function just handles the volume on the audio fade out, as well as clears the interval when the volume reaches 0.
+ */
+
+
+function selectSong(song, difficulty) {
+    if(song === 'keybeats') {
+        switch (difficulty) {
+            case 'easy':
+                importSongMap('./maps/keybeats-easy.js')
+                break;
+            case 'normal':
+                importSongMap('./maps/keybeats-normal.js')
+                break;
+            case 'hard':
+                importSongMap('./maps/keybeats-hard.js')
+                break;
         }
-    }, 1);
+} else if(song === 'for-my-girl') {
+        switch (difficulty) {
+            case 'easy':
+                importSongMap('./maps/for-my-girl-easy.js')
+                break;
+            case 'normal':
+                importSongMap('./maps/for-my-girl-normal.js')
+                break;
+            case 'hard':
+                importSongMap('./maps/for-my-girl-hard.js')
+                break;
+        }
+    } else if (song === 'space-cowboy') {
+        switch (difficulty) {
+            case 'easy':
+                importSongMap('./maps/space-cowboy-easy.js')
+                break;
+            case 'normal':
+                importSongMap('./maps/space-cowboy-normal.js')
+                break;
+            case 'hard':
+                importSongMap('./maps/space-cowboy-hard.js')
+                break;
+        }
+    } else if (song === 'funk-that') {
+        switch (difficulty) {
+            case 'easy':
+                importSongMap('./maps/funk-that-easy.js')
+                break;
+            case 'normal':
+                importSongMap('./maps/funk-that-normal.js')
+                break;
+            case 'hard':
+                importSongMap('./maps/funk-that-hard.js')
+                break;
+        }
+    }
 }
 
-function showResults() {
-    console.log("PERFECT: " + hits.perfect);
-    console.log("GOOD: " + hits.good);
-    console.log("BAD: " + hits.bad);
-    console.log("MISS: " + hits.miss);
-    console.log("SCORE: " + score);
+function importSongMap(filepath) {
+    import(filepath).then((mapModule) => {
+        initializeGame(mapModule)
+    })
 }
 
-function setupMiss() {
-    trackContainer.addEventListener('animationend', function(e) {
-        let index = e.target.classList.item(1)[6];
-        // Remove note from track
-        displayAccuracy('miss');
-        updateHits('miss');
-        removeNoteFromTrack(e.target.parentNode, e.target);
-        updateNext(index);
+const startScreen = document.querySelector('#starting-screen')
+
+function initializeGame(mapModule) {
+    songMap = mapModule;
+    audio.src = songMap.song.src;
+    game.classList.add(songMap.song.colorScheme);
+
+    // Remove Hidden Attribute of Start Screen
+    startScreen.setAttribute('hidden', true);
+    game.removeAttribute('hidden');
+
+    // create the notes
+
+    let html;
+    songMap.song.tracks.forEach((key, index) => {
+        key.notes.forEach((note) => {
+            html = document.createElement('div');
+            html.classList.add('note');
+            html.dataset.trackIndex = index;
+            html.style.animationName = 'moveNote';
+            html.style.animationTimingFunction = 'linear';
+            html.style.animationDuration = songMap.song.globalDuration + 's';
+            html.style.animationDelay = note.delay + 's';
+            html.style.animationPlayState = 'paused';
+            tracks[index].appendChild(html);
+        });
     });
-}
 
-function setupControls() {
-    window.addEventListener('keydown', function(e) {
-        if(e.key === 'Enter') {
-            start();
-        } else {
-
-            // 1. Set the index for the key that was pressed.
-            let index = geyKeyIndex(e.key);
-
-            if(Object.keys(keyPress).indexOf(e.key) !== -1 && !keyPress[e.key]) {
-                keyPress[e.key] = true;
-                // Update the corresponding key button's style to show it is pressed.
-                if(songIsPlaying && tracks[index].element.firstChild) {
-                    scoreHit(index);
-                }
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'a' && keyPressed.a === false) {
+            keyPressed.a = true
+            controls[0].classList.add('pressed');
+            if(playing && tracks[0].firstChild) {
+                resolveHit(0);
+            }
+        } else if(e.key === 's' && keyPressed.s === false) {
+            keyPressed.s = true
+            controls[1].classList.add('pressed');
+            if(playing && tracks[1].firstChild) {
+                resolveHit(1);
+            }
+        } else if(e.key === 'd' && keyPressed.d === false) {
+            keyPressed.d = true
+            controls[2].classList.add('pressed');
+            if(playing && tracks[2].firstChild) {
+                resolveHit(2);
+            }
+        } else if(e.key === 'f' && keyPressed.f === false) {
+            keyPressed.f = true
+            controls[3].classList.add('pressed');
+            if(playing && tracks[3].firstChild) {
+                resolveHit(3);
             }
         }
     });
 
-    window.addEventListener('keyup', function(e) {
-        if(Object.keys(keyPress).indexOf(e.key) !== -1) {
-            let index = geyKeyIndex(e.key);
-            keyPress[e.key] = false;
-            // Remove the button styling to show the key is not being pressed anymore.
+    document.addEventListener('keyup', (e) => {
+        if(e.key === 'a') {
+            keyPressed.a = false;
+            controls[0].classList.remove('pressed');
+        } else if(e.key === 's') {
+            keyPressed.s = false;
+            controls[1].classList.remove('pressed');
+        } else if(e.key === 'd') {
+            keyPressed.d = false;
+            controls[2].classList.remove('pressed');
+        } else if(e.key === 'f') {
+            keyPressed.f = false;
+            controls[3].classList.remove('pressed');
         }
+    });
+
+    track.addEventListener('animationend' , (e) => {
+        updateCombo('miss')
+        updateView('miss')
+        e.target.remove()
+        songMap.song.tracks[e.target.dataset.trackIndex].next++;
+    });
+
+    hitsEl.addEventListener('animationend', (e) => {
+        e.target.remove()
+    });
+
+    setTimeout(() => {
+        startGame();
+    }, 1000)
+};
+
+
+
+function resolveHit(index) {
+    let noteIndex = songMap.song.tracks[index].next;
+    let note = songMap.song.tracks[index].notes[noteIndex];
+    let accuracy = Math.abs(((Date.now() - startTime) / 1000) - (songMap.song.globalDuration + note.delay));
+    let hit;
+
+    if(accuracy > songMap.song.globalDuration / 5) {
+        return
+    };
+
+    hit = grade(accuracy);
+    hits[hits]++;
+    updateCombo(hit);
+    updateScore(hit);
+    updateView(hit);
+    tracks[index].firstChild.remove();
+    songMap.song.tracks[index].next++;
+};
+
+
+function grade(accuracy) {
+    if(accuracy < 0.1) {
+        return 'perfect'
+    } else if(accuracy < 0.2) {
+        return 'good'
+    } else if(accuracy < 0.3) {
+        return 'bad'
+    } else {
+        return 'miss'
+    }
+}
+
+function updateCombo(hit) {
+    if(hit === 'bad' || hit === 'miss') {
+        streaks.combo = 0
+        multiplier.combo = 1.1
+
+        if(hit === 'miss') {
+            hits.miss++
+            streaks.miss++;
+            checkGameEnd()
+        }
+    } else {
+        streaks.combo ++
+        multiplier.combo += 0.1
+
+        if(streaks.combo > streaks.top) {
+        streaks.top = streaks.combo
+        }
+
+        if(streaks.miss > 0) {
+        streaks.miss--
+        }
+    }
+}
+
+
+function updateScore(hit) {
+    if(streaks.combo > 0) {
+        score += 100 * multiplier[hit] * multiplier.combo;
+    } else {
+        score += 100 * multiplier[hit];
+    }
+}
+
+
+function checkGameEnd() {
+    console.log(streaks.miss);
+    if(streaks.miss === songMap.song.maxMiss) {
+        gameOver()
+    } else {
+        return;
+    }
+}
+
+
+function updateView(accuracy) {
+    scoreEl.innerText = Math.floor(score)
+    comboEl.innerText = streaks.combo + 'x'
+    if(songMap.song.difficulty === 'easy') {
+        if(streaks.miss >= 6) {
+            game.className = ''
+            game.classList.add('black')
+        } else {
+            game.className = ''
+            game.classList.add(songMap.song.colorScheme)
+        }
+    } else if(songMap.song.difficulty === 'normal') {
+        if(streaks.miss >= 3) {
+            game.className = ''
+            game.classList.add('black')
+        } else {
+            game.className = ''
+            game.classList.add(songMap.song.colorScheme)
+        }
+    } else if(songMap.song.difficulty === 'hard') {
+        if(streaks.miss >= 1) {
+            game.className = ''
+            game.classList.add('black')
+        } else {
+            game.className = ''
+            game.classList.add(songMap.song.colorScheme)
+        }
+    }
+
+    let hitEl = document.createElement('div')
+    hitEl.classList.add('hit')
+    hitEl.innerText = accuracy
+    hitEl.style.animationName = 'fadeHit'
+    hitEl.style.animationDuration = '500ms'
+    hitEl.style.animationPlayState = 'running'
+    hitsEl.appendChild(hitEl)
+}
+
+
+function startGame() {
+    startTime = Date.now()
+
+    let timer = songMap.song.duration;
+    let min;
+    let sec;
+
+    let songDurationInterval = setInterval(() => {
+        min = Math.floor(timer / 60);
+        sec = timer % 60
+        min = min < 10 ? '0' + min : min;
+        sec = sec < 10 ? '0' + sec : sec;
+    
+    
+        if(--timer < 0) {
+            clearInterval(songDurationInterval);
+            winGame()
+        }
+    }, 1000);
+
+    progressBar.style.animationName = 'progressBar';
+    progressBar.style.animationTimingFunction = 'linear';
+    progressBar.style.animationFillMode = 'both';
+    progressBar.style.animationDuration = songMap.song.duration + 's';
+    progressBar.style.animationDelay = songMap.song.globalDuration + 's';
+    progressBar.style.animationPlayState = 'running';
+
+    setTimeout(() => {
+        audio.play();
+        playing = true;
+        wave.fromElement('audio', 'audio-wave', {
+            type: 'dualbars',
+            colors: [songMap.song.waveColor]
+        });
+    }, songMap.song.globalDuration * 1000)
+
+    document.querySelectorAll('.note').forEach((note) => {
+        note.style.animationPlayState = 'running'
     });
 }
 
-function geyKeyIndex(key) {
-    switch(key) {
-        case "a":
-            return 0;
-            break;
-        case "s":
-            return 1;
-            break;
-        case "d":
-            return 2;
-            break;
-        case "f":
-            return 3;
-            break;
-    }
+
+function gameOver() {
+    fadeInterval = setInterval(fadeAudio, 75);
+    progressBar.style.animationPlayState = 'paused';
+    gameOverSFX.play();
+
+    document.querySelectorAll('.note').forEach((note) => {
+        note.style.opacity = 1;
+        setInterval(function() {
+            note.style.opacity -= 1;
+            if(note.style.opacity <= 0.0) {
+                note.remove();
+            }
+        }, 75);
+    });
 }
 
-function scoreHit(index) {
-    let timeInMS = (Date.now() - startTime);
-    let noteIndex = keybeats.controls[index].next;
-    let note = keybeats.controls[index].notes[noteIndex];
-    let perfectTime = globalDuration + note.delay;
-    let accuracy = timeInMS - perfectTime;
-    // let accuracy = Math.abs(songPosition - perfectTime);
-    let hitScore;
+function winGame() {
+    console.log("RESULTS!");
+    console.log("PERFECT: " + hits.perfect);
+    console.log("GOOD: " + hits.good);
+    console.log("BAD: " + hits.bad);
+    console.log("MISS: " + hits.miss);
+    console.log("SCORE: " + Math.floor(score));
+    console.log("TOP STREAK: " + streaks.top);
 
-    if(accuracy > (globalDuration / 4)) {
-        console.log("TOO EARLY");
-        return;
-    }
-
-    hitScore = getScore(accuracy, note.delay);
-    displayAccuracy(hitScore);
-    showHitEffect(index);
-    updateHits(hitScore);
-    calculateScore(hitScore);
-    removeNoteFromTrack(tracks[index].element, tracks[index].element.firstChild);
-    updateNext(index);
-
-    // If note has not travelled far enough, ignore keypress
-    // if(accuracy > globalDuration / 4) {
-    //     return;
-    // }
-
-    // KEEP THESE VARIABLES
-    // let accuracy = keyPressTime - startTime;
-    //let accuracy = songPosition;
-
-    // if(accuracy + note.delay > globalDuration / 4) {
-    //     console.log("NOTE DELAY: " + note.delay);
-    //     console.log("ACCURACY: " + accuracy);
-    //     console.log("SONG POSITION: " + songPosition);
-    //     console.log("TOO EARLY!");
-    //     return;
-    // }
-
-    // console.log("IS " + accuracy + " < " + (note.delay + globalDuration / 4));
-    // console.log("IS " + accuracy + " < " + (note.delay + 100));
-
-    // console.log("NOTE DELAY: " + note.delay);
-    // console.log("ACCURACY: " + accuracy);
-    // console.log("SONG POSITION: " + songPosition);
-    // console.log("DURATION / 4: " + (globalDuration / 4));
-    // console.log("TOO EARLY: " + (note.delay + globalDuration / 4));
-    // console.log("PERFECT: " + (note.delay + 100));
-    // console.log("GOOD: " + (note.delay + 200));
-    // console.log("BAD: " + (note.delay + 300));
-
-    // KEEP BELOW
-    // if(accuracy < note.delay) {
-    //     console.log("TOO EARLY");
-    //     return;
-    // } else {
-    //     if(accuracy < note.delay + 200) {
-    //         console.log("PERFECT");
-    //     } else if(accuracy < note.delay + 400) {
-    //         console.log("GOOD");
-    //     } else if(accuracy < note.delay + 600) {
-    //         console.log("BAD");
-    //     } else {
-    //         console.log("MISS");
-    //         console.log("ACCURACY: " + accuracy);
-    //         console.log("SONG POS: " + songPosition);
-    //         console.log("NOTE DELAY: " + note.delay);
-    //     }
-        
-    // }
-
-    // THIS ONE BELOW IS SORT OF OKAY
-
-    // console.log("PART 1: " + accuracy + " > " + (note.delay + 300));
-    // console.log("PART 2: " + accuracy + " < " + (note.delay + globalDuration / 4));
-
-    // if(accuracy > note.delay + 300 && accuracy < note.delay + globalDuration / 4) {
-    //     console.log("TOO EARLY");
-    //     return;
-    // } else {
-    //     if(accuracy < note.delay + 100) {
-    //         console.log("PERFECT");
-    //     } else if(accuracy < note.delay + 200) {
-    //         console.log("GOOD");
-    //     } else if(accuracy < note.delay + 300) {
-    //         console.log("BAD");
-    //     } else {
-    //         console.log("MISS");
-    //     }
-    // }
-
-
-    // if(accuracy < note.delay + globalDuration / 4) {
-    //     console.log("TOO EARLY");
-    //     return;
-    // } else if(accuracy < note.delay + 100) {
-
-    //     console.log("PERFECT");
-    // } else if(accuracy < note.delay + 200) {
-    //     console.log("GOOD");
-    // } else if(accuracy < note.delay + 300) {
-    //     console.log("BAD");
-    // } else {
-    //     console.log("MISS");
-    // }
+    newScore.push({
+        song: songMap.song.name,
+        score: Math.floor(score),
+        streak: streaks.top,
+        new: true
+    })
 }
 
-function getScore(accuracy, delay) {
-    if(accuracy < delay + 200) {
-        return 'perfect';
-    } else if(accuracy < delay + 400) {
-        return 'good';
-    } else if(accuracy < delay + 600) {
-        return 'bad';
+function fadeAudio() {
+    let volume = audio.volume - 0.1
+    if(volume >= 0) {
+        audio.volume = volume
     } else {
-        return 'miss';
+        clearInterval(fadeInterval)
+        audio.volume = 0
+        audio.pause()
+        audio.currentTime = 0
     }
 }
-
-function displayAccuracy(accuracy) {
-    console.log(accuracy);
-}
-
-function showHitEffect(index) {
-    let note = document.querySelectorAll('.note')[index];
-    console.log(note);
-}
-
-function updateHits(judgement) {
-    hits[judgement]++;
-}
-
-function calculateScore(judgement) {
-    score += 1000 * multiplier[judgement];
-}
-
-function removeNoteFromTrack(parent, child) {
-    parent.removeChild(child);
-}
-
-function updateNext(index) {
-    keybeats.controls[index].next++;
-}
-
