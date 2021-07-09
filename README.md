@@ -36,8 +36,3 @@ For having the solution to my problems 99.99% of the time, especially when looki
 ### ADDITIONAL NOTES
 
 All songs were licensed for this project.
-
-(https://ibb.co/N9Tbkz2)
-(https://ibb.co/nfJgXt7)
-(https://ibb.co/g9Bttjz)
-(https://ibb.co/zxvF4cS)
