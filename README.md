@@ -36,3 +36,11 @@ For having the solution to my problems 99.99% of the time, especially when looki
 ### ADDITIONAL NOTES
 
 All songs were licensed for this project.
+
+## NEXT STEPS
+
+- Make the game mobile friendly
+- Optimize animations
+- Automate songmap generation
+- Provide users with a way to upload their own song files
+- Save high scores to a database so that they're persistant
