@@ -37,14 +37,7 @@ For having the solution to my problems 99.99% of the time, especially when looki
 
 All songs were licensed for this project.
 
-![screenshot of title]
-(/Users/gage/Code/SEI/projects/keybeats-game/screenshots/title.png)
-
-![screenshot of game]
-(/Users/gage/Code/SEI/projects/keybeats-game/screenshots/game-normal.png)
-
-![screenshot of game over]
-(/Users/gage/Code/SEI/projects/keybeats-game/screenshots/game-lost.png)
-
-![screenshot of score board]
-(/Users/gage/Code/SEI/projects/keybeats-game/screenshots/win-results.png)
+https://ibb.co/N9Tbkz2
+https://ibb.co/nfJgXt7
+https://ibb.co/g9Bttjz
+https://ibb.co/zxvF4cS
