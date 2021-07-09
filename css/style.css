@@ -638,7 +638,7 @@ body {
 
 #results {
     color: #fff;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     font-family: 'Noto Sans', sans-serif;
@@ -691,10 +691,16 @@ body {
 }
 
 #results #highscores .score-item .difficulty {
-    width: 75px
+    width: 75px;
+    text-transform: capitalize;
+}
+
+#results #highscores .score-item .combo-streak {
+    width: 75px;
+    text-align: right;
 }
 
 #results #highscores .score-item .score {
-    width: 150px;
+    width: 120px;
     text-align: right;
 }

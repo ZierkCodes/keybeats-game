@@ -22,69 +22,6 @@
 * ==============================================
  */
 
-// * =============================================================================
-// * README: THINKING ABOUT GAME LOGIC
-// * =============================================================================
-/**
- * Before diving into the specifics of a rhythm game, let's first think about the
- * basics of any game.
- * 
- * At the very least, there are three parts to the logic of any game.
- * The first is the intialization of the game. This is based on any event that can
- * trigger the game to start, like a button click. This part of our logic will
- * set up the game, all its variables, event listeners, and anything else we need
- * to make sure the game is ready to play.
- * 
- * The second part is the bulk of our specific game logic. This is unique to any
- * game that you're playing, but ultimately, it lays out everything that needs to
- * happen for the player while they're playing the game.
- * 
- * Finally, we need a way to check to see if the game has ended. This can be 
- * based on a multitude of conditions, such as winning, losing, etc. We will also
- * need a way to reset the game after it's ended so that it can be played again
- * without having to refresh the page.
- */
-
-// * =============================================================================
-// * README: GAME LOGIC FOR THE RHYTHM GAME
-// * =============================================================================
-/**
- * There are a lot of things we'll need to do to set this up, but here is some of
- * the things you'll need to accomplish to get this working:
- * 
- * 1. We need a way to be able to select a song. This will include importing the
- * song maps and setting all our variables based on the selected song.
- * 
- * 2. You'll need a function that will handle the bulk of the game setup. This 
- * includes things like setting global variables, setting up all the individual
- * notes of the rhythm game, setting up the event listeners for when the control
- * keys [a, s, d, f] are pressed, and removing any necessary html elements that
- * were dynamically created in JavaScript. (Particularly when the animations end.)
- * 
- * 3. We'll need a way to resolve and grade hits. So, when a player presses a key,
- * we need to check the accuracy, and update a bunch of stuff depending on that
- * result.
- * 
- * 4. We'll also need a way to update the different variables. For
- * the rhythm game, this includes things like the different hits, combos, the
- * multiplier for the score, and all of that other stuff. It also includes things
- * like updating the tracks (removing notes), updating the UI, etc. So essentially,
- * every time a player hits a key (or misses), we need to update a bunch of
- * different moving parts.
- * 
- * 5. We'll need a way to start the game. This will begin our timers, play the song,
- * and listen for the song to end (in which case it will need a way to end the game
- * with a positive result, like showing the leaderboard.) It will also need to 
- * make sure the leaderboard has our new, final score.
- * 
- * 6. As mentioned above, we'll need a way to end the game. This includes removing
- * any leftover notes (in case of failure), stopping audio, etc.
- * 
- * This is a gross oversimplification, but we'll break it down further step by 
- * step in the sections below.
- */
-
-
 // ? =============================================================================
 // ? SECTION 1: DEFINE VARIABLES
 // ? =============================================================================
@@ -92,6 +29,13 @@
 // * README: VARIABLE EXPLANATIONS
 // * =============================================================================
 /**
+ * @const selectBtns - These buttons will start the game with the chosen song and difficulty
+ * @const startScreen - This is the UI that is shown at the start of the game and at the end when another song is selected
+ * @const gameOverModal - This is the UI that appears once you've missed too many notes
+ * @const newSongBtns - Once the gameOverModal or the leaderboard UI appears, you may select these buttons to choose a new song to play
+ * @const playAgainBtns - Again, in the gameOverModal or the leaderboard these buttons allow you to play the song you selected over again
+ * @const highScores - This contains an array from scoreItem, which will be used after you complete a game
+ * @const resultsScreen - This UI displays highScores and buttons to play again and select new song
  * @const game - We will need this to update the color scheme of the UI
  * @const track - We will need this to listen for animationend events (for the notes)
  * @const tracks - We will need this to iterate for all tracks, notes, etc.
@@ -114,6 +58,12 @@
  * @var hits - This will keep track of each individual hit and count.
  * @var multiplier - This tells us how much to multiply the score by. The only reason this isn't a const is because we update the combo multiplier based on successive hits.
  * @var streaks - Allows us to keep track of our streaks. Miss streaks tell us if the player is going to fail, and combo streaks keep track of our multiplier.
+ * @var scoreItem - Holds an array of game data that will be used by highScores
+ * @var rank - This keeps track of how many games you've completed
+ * @var songName - This is any of the four songs you can select
+ * @var songDifficulty - This is any of the three difficulties you can select
+ * @var comboStreak - Contains the highest combo streak you achieved after you complete a game
+ * @var finalScore = Contains your total score after you complete a game
  */
 
 const selectBtns = document.querySelectorAll('.select-btn')
@@ -121,7 +71,8 @@ const startScreen = document.querySelector('#starting-screen')
 const gameOverModal = document.querySelector('#game-over')
 const newSongBtns = document.querySelectorAll('.select-new-song')
 const playAgainBtns = document.querySelectorAll('.play-again')
-
+const highScores = document.querySelector('#highscores')
+const resultsScreen = document.querySelector('#results')
 const game = document.querySelector('#game') 
 const track = document.querySelector('#track')
 const tracks = document.querySelectorAll('.track')
@@ -132,18 +83,18 @@ const audioWave = document.querySelector('#audio-wave')
 const scoreEl = document.querySelector('#score .number')
 const comboEl = document.querySelector('#combo .number')
 const hitsEl = document.querySelector('#hits')
+const audio = document.querySelector('#audio')
 
-let audio = document.querySelector('#audio')
+// default game state variables and objects
 
+let wave;
 let songMap;
 let startTime;
 let fadeInterval;
-let wave;
+let songDurationInterval;
 let scoreBoard = [];
 let playing = false;
 let score = 0;
-
-
 
 let keyPressed = {
     a: false,
@@ -176,17 +127,17 @@ let streaks = {
 // ? =============================================================================
 // ? SECTION 2: EVENT LISTENERS
 // ? =============================================================================
-
+// * BUTTON EVENT LISTENERS ======================================================
 selectBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
         selectSong(event.target.dataset.song, event.target.dataset.difficulty)
     })
 });
 
+
 newSongBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
         resetGame();
-        // Leaderboard dispaly none
         startScreen.style.display = 'flex'
     })
 })
@@ -194,12 +145,11 @@ newSongBtns.forEach((btn) => {
 playAgainBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
         resetGame();
-        // If high scores screen .display, hide it
-        selectSong(gameOverModal.dataset.song, gameOverModal.dataset.difficulty)
-        // selectSong(songMap.song.id, songMap.song.difficulty);
+        selectSong(game.dataset.song, game.dataset.difficulty)
     });
 });
 
+// * KEYPRESS EVENT LISTENERS ====================================================
 document.addEventListener('keydown', (e) => {
     if(e.key === 'a' && keyPressed.a === false) {
         keyPressed.a = true
@@ -244,6 +194,7 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
+// * ANIMATION EVENT LISTENERS ===================================================
 track.addEventListener('animationend' , (e) => {
     updateCombo('miss')
     updateView('miss')
@@ -277,10 +228,7 @@ hitsEl.addEventListener('animationend', (e) => {
  *              2. Sets the audio source.
  *              3. Sets the game's color scheme.
  *              4. Creates all the notes based on the songMap
- *              5. Adds the event listeners for all the controls (as well as corresponding logic)
- *              6. Sets up the event listener for animationend on the main track (as well as corresponding logic)
- *              7. Sets up the event listener for the hits element that displays the grade of the hit
- *              8. Calls the startGame() function to start the game.
+ *              5. Calls the startGame() function to start the game.
  * @function resolveHit()
  *      -> Requires @param index
  *      -> Description: This function handles all the logic to determine the success of a hit when a control key is pressed:
@@ -343,16 +291,14 @@ hitsEl.addEventListener('animationend', (e) => {
  *              2. Pauses the progressBar.
  *              3. Plays the game over sound fx (gameOverSFX)
  *              4. Fades out all the notes and removes them from the track.
- *         * Note: We will need to add more to this function later.
+ *              5. Displays gameOverModel
  * @function winGame()
- *      -> Description: This function handles the gameOver state when a player wins.
- *         Currently, is is just pushing data to the scoreBoard.
- *         * We will need to loop through the scoreboard and make sure there are no "new" objects before pushing the new one.
- *         * We will be adding more to this function later, as well.
+ *      -> Description: This function handles the gameOver state when a player wins and displays the High Scores UI.
+ * @function resetGame()
+ *      -> Description: This function resets the game's variables, as well as any needed UI updates.
  * @function fadeAudio()
  *      -> This function just handles the volume on the audio fade out, as well as clears the interval when the volume reaches 0.
  */
-
 
 function selectSong(song, difficulty) {
     if(song === 'keybeats') {
@@ -413,16 +359,12 @@ function importSongMap(filepath) {
 }
 
 function initializeGame(mapModule) {
-    console.log("INITIALIZING GAME");
     songMap = mapModule;
     audio.src = songMap.song.src;
     audio.load();
-    console.log(audio);
 
     game.className = '';
     game.classList.add(songMap.song.colorScheme);
-
-    // Remove Hidden Attribute of Start Screen
     startScreen.style.display = 'none';
     game.style.display = 'block';
 
@@ -448,19 +390,12 @@ function initializeGame(mapModule) {
 };
 
 function resolveHit(index) {
-    console.log("RESOLVING HIT")
     let noteIndex = songMap.song.tracks[index].next;
     let note = songMap.song.tracks[index].notes[noteIndex];
     let accuracy = Math.abs(((Date.now() - startTime) / 1000) - (songMap.song.globalDuration + note.delay));
     let hit;
-    console.log(noteIndex);
-    console.log(accuracy + " > " + songMap.song.globalDuration / 5);
-    console.log((Date.now() - startTime) / 1000);
-    console.log(songMap.song.globalDuration + note.delay);
-    console.log(songMap.song.globalDuration)
-    console.log(note.delay);
+
     if(accuracy > songMap.song.globalDuration / 5) {
-        console.log("RETURNING");
         return
     };
 
@@ -492,7 +427,6 @@ function updateCombo(hit) {
         multiplier.combo = 1.1
 
         if(hit === 'miss') {
-            console.log("MISSED!");
             hits.miss++
             streaks.miss++;
             checkGameEnd()
@@ -522,8 +456,6 @@ function updateScore(hit) {
 
 
 function checkGameEnd() {
-    console.log("STREAKS: " + streaks.miss);
-    console.log("MAX MISS: " + songMap.song.maxMiss);
     if(streaks.miss >= songMap.song.maxMiss) {
         gameOver()
     } else {
@@ -570,13 +502,11 @@ function updateView(accuracy) {
     hitsEl.appendChild(hitEl)
 }
 
-let songDurationInterval;
-
 function startGame() {
     startTime = 0;
     startTime = Date.now()
 
-    let timer = songMap.song.duration;
+    let timer = songMap.song.duration + songMap.song.globalDuration;
     let min;
     let sec;
 
@@ -625,8 +555,8 @@ function gameOver() {
     gameOverSFX.play();
 
     gameOverModal.style.display = 'flex'
-    gameOverModal.dataset.song = songMap.song.id;
-    gameOverModal.dataset.difficulty = songMap.song.difficulty;
+    game.dataset.song = songMap.song.id;
+    game.dataset.difficulty = songMap.song.difficulty;
 
     document.querySelectorAll('.note').forEach((note) => {
         note.style.opacity = 1;
@@ -637,6 +567,70 @@ function gameOver() {
             }
         }, 75);
     });
+}
+
+function winGame() {
+    game.dataset.song = songMap.song.id;
+    game.dataset.difficulty = songMap.song.difficulty;
+    game.style.display = 'none'
+
+    scoreBoard.forEach((score) => {
+        if(score.new) {
+            score.new = false
+        }
+    })
+
+    scoreBoard.push({
+        song: songMap.song.name,
+        score: Math.floor(score),
+        streak: streaks.top,
+        difficulty: songMap.song.difficulty,
+        new: true
+    })
+
+    let orderedScores = scoreBoard.sort((a , b) => b.score - a.score)
+    
+    if(highScores.hasChildNodes()) {
+        highScores.innerHTML = ''
+    }
+
+    orderedScores.forEach((score, index) => {
+        let scoreItem = document.createElement('div')
+        scoreItem.classList.add('score-item')
+        if(score.new) {
+            scoreItem.classList.add('new')
+        }
+
+        let rank = document.createElement('p')
+        rank.classList.add('rank-num')
+        rank.innerText = '#' + (index + 1)
+
+        let songName = document.createElement('p')
+        songName.classList.add('song-name')
+        songName.innerText = score.song
+
+        let songDifficulty = document.createElement('p')
+        songDifficulty.classList.add('difficulty')
+        songDifficulty.innerText = score.difficulty
+
+        let comboStreak = document.createElement('p')
+        comboStreak.classList.add('combo-streak')
+        comboStreak.innerText = score.streak + 'x'
+
+        let finalScore = document.createElement('p')
+        finalScore.classList.add('score')
+        finalScore.innerText = score.score.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+        scoreItem.appendChild(rank)
+        scoreItem.appendChild(songName)
+        scoreItem.appendChild(songDifficulty)
+        scoreItem.appendChild(comboStreak)
+        scoreItem.appendChild(finalScore)
+
+        highScores.appendChild(scoreItem)
+    })
+
+    resultsScreen.style.display = 'flex'
 }
 
 function resetGame() {
@@ -663,25 +657,9 @@ function resetGame() {
     comboEl.innerText = '0x';
     game.style.display = 'none'
     gameOverModal.style.display = 'none';
+    resultsScreen.style.display = 'none'
     progressBar.style.animation = 'none'
     game.className = ''
-}
-
-function winGame() {
-    console.log("RESULTS!");
-    console.log("PERFECT: " + hits.perfect);
-    console.log("GOOD: " + hits.good);
-    console.log("BAD: " + hits.bad);
-    console.log("MISS: " + hits.miss);
-    console.log("SCORE: " + Math.floor(score));
-    console.log("TOP STREAK: " + streaks.top);
-
-    newScore.push({
-        song: songMap.song.name,
-        score: Math.floor(score),
-        streak: streaks.top,
-        new: true
-    })
 }
 
 function fadeAudio() {

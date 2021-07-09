@@ -405,7 +405,7 @@ export let song = {
     "duration": 110.62855,
     "globalDuration": 4,
     "maxMiss": 10,
-    "difficulty": 'normal',
+    "difficulty": 'easy',
     "colorScheme": 'green',
     "waveColor": '#f1fffa',
     "tracks": [a, s, d, f]
